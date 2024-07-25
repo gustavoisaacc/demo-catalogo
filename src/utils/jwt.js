@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../config/config.js";
 
 export const createAccessToken = (payload) => {
-  new Promise((resolve, reject) => {
-    jwt.sign(payload, SECRET_KEY, (err, token) => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" }, (err, token) => {
       if (err) reject(err);
       resolve(token);
     });
