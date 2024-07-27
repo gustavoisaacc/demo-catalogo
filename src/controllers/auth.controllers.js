@@ -1,7 +1,9 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 import { User } from "../model/user.model.js";
 import { createAccessToken } from "../utils/jwt.js";
+import { SECRET_KEY } from "../config/config.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -19,7 +21,7 @@ export const register = async (req, res) => {
   const token = await createAccessToken({ id: savedUser._id });
 
   res.cookie("token", token, {
-    httpOnly: true,
+    httpOnly: process.env.NODE_ENV !== "development",
     secure: true,
     sameSite: "none",
   });
@@ -50,11 +52,35 @@ export const login = async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
+    expires: new Date(Date.now() + 600000), // 10 minutes
   });
 
   res.json({
     id: user._id,
     username: user.username,
     email: user.email,
+    token: token,
   });
+};
+
+export const verifycateTokens = async (req, res) => {
+  const { token } = req.body;
+  if (!token) return res.send(false);
+
+  jwt.verify(token, SECRET_KEY, async (error, user) => {
+    if (error) return res.sendStatus(401);
+
+    const userFound = await User.findById(user.id);
+    if (!userFound) return res.sendStatus(401);
+
+    return res.json({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+    });
+  });
+};
+export const logout = (req, res) => {
+  res.clearCookie("token");
+  res.send("ok");
 };

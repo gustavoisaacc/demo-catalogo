@@ -5,3 +5,5 @@ export const Authrouter = Router();
 
 Authrouter.post("/register", authControllers.register);
 Authrouter.post("/login", authControllers.login);
+Authrouter.post("/verify", authControllers.verifycateTokens);
+Authrouter.post("/logout", authControllers.logout);

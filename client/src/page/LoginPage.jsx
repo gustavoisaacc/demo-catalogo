@@ -6,10 +6,13 @@ import Container from "../components/ui/Container";
 import Label from "../components/ui/Label";
 import { useAuth } from "../context";
 import MessageError from "../components/MessageError";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
-  const { signin, errors: errorLogin } = useAuth();
-  console.log(errorLogin);
+  const { signin, errors: errorLogin, isAuth } = useAuth();
+
+  const navegate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,6 +23,13 @@ export default function LoginPage() {
     const res = await signin(data);
     console.log(res);
   });
+
+  useEffect(() => {
+    if (isAuth) {
+      navegate("/dashboard");
+    }
+  }, [isAuth]);
+
   return (
     <Container>
       <Card>
