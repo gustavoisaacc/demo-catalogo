@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context";
+
+import { Button } from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Container from "../components/ui/Container";
 import Label from "../components/ui/Label";
-import { useAuth } from "../context";
 import MessageError from "../components/MessageError";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const { signin, errors: errorLogin, isAuth } = useAuth();
@@ -67,7 +68,9 @@ export default function LoginPage() {
               <MessageError props={errors.password.message} />
             )}
           </div>
-          <Button>Inisiar Sesion</Button>
+          <Button className="bg-secondary hover:bg-secondaryDarck text-white mr-2 w-full">
+            Inisiar Sesion
+          </Button>
         </form>
       </Card>
     </Container>

@@ -22,4 +22,47 @@ export const ROUTES_PRIVATE = [
     path: "/products",
     name: "Productos",
   },
+  {
+    path: "/orders",
+    name: "Pedidos",
+  },
+];
+
+export const MENULI = [
+  {
+    path: "galletas",
+    label: "Galleta",
+  },
+  {
+    path: "galletas",
+    label: "Chocolate",
+  },
+  {
+    path: "galletas",
+    label: "Obleas",
+  },
+  {
+    path: "galletas",
+    label: "Jugos",
+  },
+  {
+    path: "galletas",
+    label: "Chupetines",
+  },
+  {
+    path: "galletas",
+    label: "Chicles",
+  },
+  {
+    path: "galletas",
+    label: "Alfajores",
+  },
+  {
+    path: "galletas",
+    label: "Gomas",
+  },
+  {
+    path: "galletas",
+    label: "Fideos",
+  },
 ];

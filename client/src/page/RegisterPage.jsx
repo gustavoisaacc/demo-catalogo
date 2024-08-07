@@ -1,4 +1,4 @@
-import Button from "../components/ui/Button";
+import { Button } from "../components/ui/Button";
 import Card from "../components/ui/Card";
 import Container from "../components/ui/Container";
 import Input from "../components/ui/Input";
@@ -24,7 +24,9 @@ export default function RegisterPage() {
             <Label name="Contraseña" />
             <Input type="password" placeholder="Contraseña" />
           </div>
-          <Button>Registrarse</Button>
+          <Button className="bg-secondary hover:bg-secondaryDarck text-white mr-2 w-full">
+            Registrarse
+          </Button>
         </form>
       </Card>
     </Container>

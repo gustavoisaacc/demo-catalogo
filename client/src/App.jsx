@@ -5,6 +5,7 @@ import HomePage from "./page/HomePage";
 import DashboarPage from "./page/DashboarPage";
 import Layout from "./layout/Layout";
 import LayoutC from "./layout/LayoutC";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -14,11 +15,21 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
-        </Route>
-        <Route element={<Layout />}>
           <Route path="/dashboard" element={<DashboarPage />} />
         </Route>
+        <Route element={<Layout />}></Route>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        theme="colored" // Cambia a "dark" o "light" según prefieras
+      />
     </div>
   );
 }
