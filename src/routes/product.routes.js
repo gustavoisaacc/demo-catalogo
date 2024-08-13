@@ -17,3 +17,4 @@ productRouter.put(
 );
 productRouter.get("/", productController.findAll);
 productRouter.delete("/:id", productController.deleteOne);
+productRouter.get("/:id/availability", productController.updateAvailability);

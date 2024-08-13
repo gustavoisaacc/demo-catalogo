@@ -3,6 +3,8 @@ import { Button } from "../ui/Button";
 
 import { toast } from "react-toastify";
 
+import { CiEdit, CiTrash } from "react-icons/ci";
+
 export default function Product({ product, deleteProduct }) {
   const navegate = useNavigate();
   const handleDelete = async (id) => {
@@ -23,21 +25,26 @@ export default function Product({ product, deleteProduct }) {
         />
       </td>
       <td className="py-2 px-4">{product.name}</td>
-      <td className="py-2 px-4">{product.description}</td>
+
       <td className="py-2 px-4 text-right">${product.price}</td>
       <td className="py-2 px-4 text-right">{product.stock}</td>
-      <td className="py-2 px-4 text-center">
+      <td className="py-2 px-4 text-center flex place-content-center flex-col md:flex-row ">
         <Button
           onClick={() => {
             navegate(`?id=${product._id}`);
           }}
           variant="primary"
-          className="mr-2"
+          className=" mr-2 p-2 rounded-full hover:bg-blue-100 transition duration-300 ease-in-out transform hover:scale-110"
         >
-          Editar
+          <CiEdit className="w-3 h-3 md:w-5 md:h-5" />
         </Button>
-        <Button onClick={() => handleDelete(product._id)} variant="danger">
-          Eliminar
+        {/* Botón de eliminar */}
+        <Button
+          onClick={() => handleDelete(product._id)}
+          variant="danger"
+          className="p-1 rounded-full hover:bg-red-100 transition duration-300 ease-in-out transform hover:scale-110"
+        >
+          <CiTrash className="w-3 h-3 md:w-5 md:h-5" />
         </Button>
       </td>
     </tr>

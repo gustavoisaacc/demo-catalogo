@@ -1,18 +1,43 @@
 import { Category } from "../model/category.model.js";
+import { Brand } from "../model/brand.js";
 import { Product } from "../model/product.modal.js";
 import { deleteFile, uploadFile } from "../utils/uploadFile.js";
+import mongoose from "mongoose";
 
 export const create = async (req, res) => {
   const data = req.body;
   const image = req.files.image;
 
+  const newProduct = new Product(data);
   if (image && image.length > 0) {
-    const imageUrl = await uploadFile(image[0]);
-    data.image = imageUrl.downloadUrl;
+    const { ref, downloadUrl } = await uploadFile(image[0]);
+    newProduct.image = downloadUrl;
   }
-  const product = new Product(data);
-  await product.save();
-  res.status(200).json({ menssage: "Product created successfully" });
+
+  if (data.category) {
+    const findCategory = await Category.findOne({
+      name: { $in: data.category },
+    });
+    if (!findCategory) {
+      const error = new Error("Category not found");
+      return res.status(404).json({ menssage: error.message });
+    }
+    newProduct.category = findCategory._id;
+  }
+
+  if (data.brand) {
+    const findBrand = await Brand.findOne({
+      name: { $in: data.brand },
+    });
+    if (!findBrand) {
+      const error = new Error("Brand not found");
+      return res.status(404).json({ message: error.message });
+    }
+    newProduct.brand = findBrand._id;
+  }
+
+  await newProduct.save();
+  res.status(200).json({ message: "Success!" });
 };
 
 export const findAll = async (req, res) => {
@@ -67,4 +92,15 @@ export const updateOne = async (req, res) => {
   findProduct.image = data.image;
   await findProduct.save();
   res.status(200).json({ menssage: "Product update successfully " });
+};
+
+export const updateAvailability = async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById({ _id: id });
+
+  if (!product) return res.json({ msg: "not fund" });
+
+  product.availability = !product.availability;
+  await product.save();
+  res.json({ data: product });
 };

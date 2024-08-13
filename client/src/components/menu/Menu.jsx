@@ -17,7 +17,11 @@ export default function Menu() {
             {ROUTES_PUBLIC.map((item) => {
               return (
                 <>
-                  <Link to={item.path} key={item.name}>
+                  <Link
+                    onClick={() => setIsOpen(false)}
+                    to={item.path}
+                    key={item.name}
+                  >
                     {item.name}
                   </Link>
                 </>

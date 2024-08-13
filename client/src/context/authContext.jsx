@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [errors, setErrors] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   // clear errors after 5 seconds
@@ -24,16 +25,16 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
+
       Cookies.set("key", res.data.token, {
         expires: new Date(Date.now() + 600000),
       });
-      console.log(res);
-
       setUser(res.data);
       setIsAuth(true);
+      return res.data;
     } catch (error) {
-      console.log(error);
       setErrors(error.response.data.message);
+      setLoading(false);
     }
   };
 
@@ -59,7 +60,6 @@ export const AuthProvider = ({ children }) => {
       }
       try {
         const res = await verifyTokenRequest(token);
-        console.log(res);
         if (!res.data) setLoading(false);
         setUser(res.data);
         setIsAuth(true);

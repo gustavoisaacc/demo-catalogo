@@ -6,7 +6,10 @@ function Layout() {
   const { isAuth, loading } = useAuth();
 
   if (loading) return <h1>Loading...</h1>;
-  if (!isAuth && !loading) return <Navigate to="/login" replace />;
+  if (!isAuth && !loading) {
+    alert("Por favor inicie session");
+    return <Navigate to="/login" replace />;
+  }
   return (
     <>
       <header className="bg-primary">

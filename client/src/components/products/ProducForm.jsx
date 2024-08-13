@@ -1,3 +1,4 @@
+import { useBrand } from "../../context";
 import MessageError from "../MessageError";
 
 export default function ProductForm({
@@ -5,8 +6,9 @@ export default function ProductForm({
   errors,
   setPreviewImage,
   productToEdit,
-  setValue,
+  category,
 }) {
+  const { brand } = useBrand();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -60,8 +62,47 @@ export default function ProductForm({
         />
         {errors.name && <MessageError props={errors.name.message} />}
       </div>
-
-      <div className="flex flex-col gap-5 mt-5">
+      <div className="flex flex-col gap-5">
+        <select
+          id="category"
+          className="py-3 mt-5 outline-none border"
+          defaultValue=""
+          {...register("category", {
+            required: "La categoría es obligatoria",
+          })}
+        >
+          <option value="" disabled>
+            Seleccione una categoría
+          </option>
+          {category.map((item) => (
+            <option value={item.name} key={item._id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+        {errors.category && <MessageError props={errors.category.message} />}
+      </div>
+      <div className="flex flex-col gap-5">
+        <select
+          id="brand"
+          className="py-3 mt-5 outline-none border"
+          defaultValue=""
+          {...register("brand", {
+            required: "La categoría es obligatoria",
+          })}
+        >
+          <option value="" disabled>
+            Seleccione una marca del producto
+          </option>
+          {brand.map((item) => (
+            <option value={item.name} key={item._id}>
+              {item.name}
+            </option>
+          ))}
+        </select>
+        {errors.brand && <MessageError props={errors.brand.message} />}
+      </div>
+      <div className="flex flex-col gap-5 mt-5 ">
         <label className="font-normal text-2xl" htmlFor="name">
           Precio
         </label>

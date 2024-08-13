@@ -14,7 +14,7 @@ export default function DashboarPage() {
   }, []);
   return (
     <>
-      <section className="flex justify-between mt-5 w-[95%] m-auto">
+      <section className="flex justify-between mt-5 w-[90%] m-auto md:w[95%]">
         <h1 className="text-2xl font-semibold">Administración de Productos</h1>
         <Button
           onClick={() => navegate("?newproduct=true")}

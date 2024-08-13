@@ -20,13 +20,11 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = handleSubmit(async (data) => {
-    const res = await signin(data);
-    console.log(res);
-  });
+  const onSubmit = handleSubmit(async (data) => await signin(data));
 
   useEffect(() => {
     if (isAuth) {
+      alert("You have already logged in");
       navegate("/dashboard");
     }
   }, [isAuth]);

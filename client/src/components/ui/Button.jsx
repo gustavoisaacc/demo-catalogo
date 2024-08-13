@@ -1,4 +1,7 @@
+import { useAuth } from "../../context";
+
 export const Button = ({ variant, onClick, className, children }) => {
+  const { loading } = useAuth;
   // Definir estilos base y variantes
   const baseStyle =
     "px-4 py-2 rounded font-semibold transition duration-300 ease-in-out focus:outline-none";
@@ -16,7 +19,7 @@ export const Button = ({ variant, onClick, className, children }) => {
 
   return (
     <button onClick={onClick} className={combinedClassName}>
-      {children}
+      {loading ? "cargando" : children}
     </button>
   );
 };

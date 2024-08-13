@@ -13,12 +13,11 @@ export default function ListProduct() {
   }
   return (
     <>
-      <table className="w-full border-collapse">
+      <table className="w-full border-collapse text-[10px] md:text-lg">
         <thead>
           <tr className="bg-[#2C3E50] text-white">
             <th className="py-2 px-4 text-left">imagen</th>
             <th className="py-2 px-4 text-left">Nombre</th>
-            <th className="py-2 px-4 text-left">Descripción</th>
             <th className="py-2 px-4 text-right">Precio</th>
             <th className="py-2 px-4 text-right">Stock</th>
             <th className="py-2 px-4 text-center">Acciones</th>

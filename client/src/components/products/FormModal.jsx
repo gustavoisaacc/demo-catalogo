@@ -13,13 +13,15 @@ import {
 import ProductForm from "./ProducForm";
 import { toast } from "react-toastify";
 import { Button } from "../ui/Button";
-import { useProduct } from "../../context";
+import { useCategory, useProduct } from "../../context";
 
 export default function AddProductModal() {
   //hook para crear producto
   const [previewImage, setPreviewImage] = useState(null);
 
-  const { createProduct, products, updateProduct, getProduct } = useProduct();
+  const { createProduct, products, updateProduct, getProduct, loading } =
+    useProduct();
+  const { category } = useCategory();
   // //obteniendo si el modal exite
   const navitage = useNavigate();
   const location = useLocation();
@@ -28,15 +30,22 @@ export default function AddProductModal() {
   const productId = queyParams.get("id");
 
   const show = query || productId ? true : false;
-
+  let productToEdit;
+  const initialValue = {
+    name: "",
+    price: "",
+    description: "",
+    category: "",
+    brand: "",
+    image: null,
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     setValue,
-  } = useForm();
-  let productToEdit;
+  } = useForm(initialValue || productToEdit);
   // Obtener el producto existente si estamos en modo de edición
   if (productId) {
     productToEdit = products.find((product) => product._id === productId);
@@ -53,10 +62,8 @@ export default function AddProductModal() {
   }, [productToEdit, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("🚀 ~ onSubmit ~ productToEdit:");
+    console.log("🚀 ~ onSubmit crear~ data:", data);
     if (productToEdit) {
-      console.log("🚀 ~ onSubmit ~ data:", data);
-
       const formData = new FormData();
 
       // Agregar datos al formData
@@ -64,6 +71,8 @@ export default function AddProductModal() {
       formData.append("price", data.price);
       formData.append("image", previewImage.image);
       formData.append("description", data.description);
+      formData.append("category", data.category);
+      formData.append("brand", data.brand);
 
       // Modo de edición
       const res = await updateProduct(productId, formData);
@@ -76,6 +85,8 @@ export default function AddProductModal() {
       formData.append("name", data.name);
       formData.append("price", data.price);
       formData.append("description", data.description);
+      formData.append("category", data.category);
+      formData.append("brand", data.brand);
 
       // Verificar que haya un archivo de imagen
       if (data.image.length > 0) {
@@ -90,6 +101,7 @@ export default function AddProductModal() {
       toast.success("Producto agregado exitosamente");
     }
     getProduct();
+    setPreviewImage(null);
     reset(); // Limpiar el formulario
     navitage("/dashboard");
   });
@@ -141,7 +153,7 @@ export default function AddProductModal() {
                   >
                     {previewImage && (
                       <img
-                        src={previewImage.image}
+                        src={previewImage || previewImage.image}
                         alt="Vista previa"
                         className="mt-4 max-w-xs"
                       />
@@ -152,8 +164,9 @@ export default function AddProductModal() {
                       errors={errors}
                       productToEdit={productToEdit}
                       setValue={setValue}
+                      category={category}
                     />
-
+                    {loading && <p>CARGANDO...</p>}
                     <Button
                       variant="default"
                       className="bg-secondary hover:bg-secondaryDarck w-full mt-5"
