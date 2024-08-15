@@ -37,7 +37,6 @@ export default function ProductForm({
             id="image"
             type="file"
             accept="image/*"
-            placeholder="Nombre del producto"
             className="w-full p-3  border-gray-300 border"
             {...register("image", {
               required: !productToEdit && "La imagen es obligatorio",
@@ -45,7 +44,7 @@ export default function ProductForm({
             onChange={handleImageChange}
           />
         )}
-        {errors.name && <MessageError props={errors.name.message} />}
+        {errors.image && <MessageError props={errors.image.message} />}
       </div>
       <div className="flex flex-col gap-5">
         <label className="font-normal text-2xl" htmlFor="name">
@@ -113,6 +112,7 @@ export default function ProductForm({
           className="w-full p-3  border-gray-300 border"
           {...register("price", {
             required: "El precio es obligatorio",
+            valueAsNumber: true,
             validate: {
               positive: (value) =>
                 parseFloat(value) >= 0 || "El precio debe ser positivo",

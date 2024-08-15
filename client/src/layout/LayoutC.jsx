@@ -7,7 +7,7 @@ function LayoutC() {
       <header className="bg-primary">
         <Menu />
       </header>
-      <main>
+      <main className="h-screen">
         <Outlet />
       </main>
     </>

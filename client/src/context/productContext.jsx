@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import {
   deleteProductReques,
-  getProductRequest,
   isAvailable,
   postProductReques,
   updateProductReques,
@@ -14,10 +13,9 @@ export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isStock, setIsStock] = useState(true);
+  const [error, setError] = useState([]);
 
-  const [currentPage, setCurrentPage] = useState(() => {
-    return;
-  });
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
   const getProduct = async (page = 1, limit = 10) => {
@@ -28,7 +26,8 @@ export const ProductProvider = ({ children }) => {
           limit,
         },
       });
-      setProducts(res.data.product);
+      console.log("🚀 ~ getProduct ~ res:", res.data.products);
+      setProducts(res.data.products);
       setTotalPages(res.data.totalPage);
       return res.data;
     } catch (error) {
@@ -36,18 +35,19 @@ export const ProductProvider = ({ children }) => {
     }
   };
   const createProduct = async (data) => {
-    console.log("🚀 ~ createProduct ~ data:", data);
     setLoading(true);
-
     try {
       const res = await postProductReques(data);
+      console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
         setProducts(res.data);
         setLoading(false);
       }
       return res.data;
     } catch (error) {
-      console.log(error);
+      setError(error.response.data.menssage);
+      setLoading(false);
+      return error.response.data;
     }
   };
   const updateProduct = async (id, data) => {
@@ -60,6 +60,7 @@ export const ProductProvider = ({ children }) => {
       return res.data;
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
     }
   };
   const updateAvailable = async (id) => {
@@ -97,6 +98,7 @@ export const ProductProvider = ({ children }) => {
         currentPage,
         totalPages,
         isStock,
+        error,
         setCurrentPage,
         createProduct,
         updateProduct,

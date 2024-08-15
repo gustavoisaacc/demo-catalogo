@@ -4,9 +4,12 @@ import { Button } from "./Button";
 
 export default function Pagination() {
   const { currentPage, totalPages, setCurrentPage } = useProduct();
+  console.log("🚀 ~ Pagination ~ currentPage:", currentPage === 1);
+
   const [isDisabledNext, setIsDisabledNext] = useState(false);
   const [isDisabledPrev, setIsDisabledPrev] = useState(false);
   const handleNextPage = () => {
+    console.log("🚀 ~ Pagination ~ totalPages:", totalPages);
     if (currentPage < totalPages) {
       console.log(currentPage);
       setCurrentPage(currentPage + 1);

@@ -2,11 +2,22 @@ import { Category } from "../model/category.model.js";
 import { Brand } from "../model/brand.js";
 import { Product } from "../model/product.modal.js";
 import { deleteFile, uploadFile } from "../utils/uploadFile.js";
-import mongoose from "mongoose";
+
+import { validateProduct } from "../schema/product.schema.js";
 
 export const create = async (req, res) => {
   const data = req.body;
+
   const image = req.files.image;
+  const result = validateProduct({
+    name: data.name,
+    price: data.price,
+    category: data.category,
+    description: data.description,
+    brand: data.brand,
+  });
+
+  if (!result.success) res.status(400).json(result);
 
   const newProduct = new Product(data);
   if (image && image.length > 0) {
@@ -41,21 +52,35 @@ export const create = async (req, res) => {
 };
 
 export const findAll = async (req, res) => {
-  const { page = 1, limit = 2 } = req.query;
+  const { page = 1, limit } = req.query;
+
   if (limit) {
-    const product = await Product.find()
-      .limit(parseInt(limit))
-      .skip((parseInt(page) - 1) * parseInt(limit))
-      .exec();
-    const count = await Product.countDocuments();
-    return res.json({
-      product,
-      totalPage: Math.ceil(count / limit),
-      currentPage: page,
-    });
+    // Manejo de paginación
+    try {
+      const products = await Product.find()
+        .limit(parseInt(limit))
+        .skip((parseInt(page) - 1) * parseInt(limit))
+        .exec();
+      const count = await Product.countDocuments();
+      return res.json({
+        products,
+        totalPage: Math.ceil(count / limit),
+        currentPage: page,
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error fetching paginated products" });
+    }
   }
-  const products = await Product.find().populate("category");
-  res.json(products);
+
+  // Si no hay límite en la consulta, devuelve todos los productos
+  try {
+    const products = await Product.find().populate("category");
+    return res.status(200).json(products);
+  } catch (error) {
+    return res.status(500).json({ error: "Error fetching products" });
+  }
 };
 
 export const deleteOne = async (req, res) => {
@@ -75,6 +100,7 @@ export const updateOne = async (req, res) => {
   const image = req.files.image;
 
   const findProduct = await Product.findById(id);
+  console.log("🚀 ~ updateOne ~ findProduct:", findProduct);
   if (!findProduct) throw new Error("Product not found");
   if (image === "undefined") {
     data.image = data.image;
@@ -86,6 +112,7 @@ export const updateOne = async (req, res) => {
       data.image = imageUrl.downloadUrl;
     }
   }
+
   findProduct.name = data.name || findProduct.name;
   findProduct.price = data.price || findProduct.price;
   findProduct.description = data.description || findProduct.description;

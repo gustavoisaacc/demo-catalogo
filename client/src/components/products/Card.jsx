@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuth, useProduct } from "../../context";
 export default function Card({ items }) {
   const { isAuth } = useAuth();
   const { updateAvailable, getProduct } = useProduct();
   useEffect(() => {
     getProduct();
-  }, [items.availability, getProduct]);
+  }, []);
+
   return (
     <div
       className={`min-h-[200px] min-w-40 bg-white relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
@@ -20,7 +21,7 @@ export default function Card({ items }) {
 
       <img
         src={items.image}
-        alt={`imagen de ${name}`}
+        alt={`imagen de ${items.name}`}
         className={`w-full h-full rounded-lg shadow-md transition-transform duration-300 `}
       />
       <div className="bg-white p-4 dark:bg-[#333333]">

@@ -39,12 +39,14 @@ export default function AddProductModal() {
     brand: "",
     image: null,
   };
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
     setValue,
+    setError,
   } = useForm(initialValue || productToEdit);
   // Obtener el producto existente si estamos en modo de edición
   if (productId) {
@@ -57,55 +59,68 @@ export default function AddProductModal() {
       setValue("name", productToEdit.name);
       setValue("price", productToEdit.price);
       setValue("description", productToEdit.description);
+      setValue("category", productToEdit.category);
+      setValue("brand", productToEdit.brand);
       setPreviewImage(productToEdit);
     }
   }, [productToEdit, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("🚀 ~ onSubmit crear~ data:", data);
-    if (productToEdit) {
+    try {
       const formData = new FormData();
 
-      // Agregar datos al formData
       formData.append("name", data.name);
-      formData.append("price", data.price);
-      formData.append("image", previewImage.image);
+      formData.append("price", parseFloat(data.price));
       formData.append("description", data.description);
       formData.append("category", data.category);
       formData.append("brand", data.brand);
 
-      // Modo de edición
-      const res = await updateProduct(productId, formData);
-      console.log("🚀 ~ onSubmit ~ res:", res);
-      toast.success("Producto actualizado exitosamente");
-    } else {
-      const formData = new FormData();
-
-      // Agregar datos al formData
-      formData.append("name", data.name);
-      formData.append("price", data.price);
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-      formData.append("brand", data.brand);
-
-      // Verificar que haya un archivo de imagen
-      if (data.image.length > 0) {
-        formData.append("image", data.image[0]); // La imagen está en un arreglo
-      } else {
-        toast.error("Por favor, selecciona una imagen.");
+      // Verificar y añadir la imagen si está presente
+      if (data.image && data.image.length > 0) {
+        formData.append("image", data.image[0]);
+      } else if (!productToEdit) {
+        setError("image", {
+          type: "manual",
+          message: "Por favor, selecciona una imagen.",
+        });
         return;
       }
-      // Modo de creación
-      const res = await createProduct(formData);
-      console.log(res);
-      toast.success("Producto agregado exitosamente");
-    }
-    getProduct();
-    setPreviewImage(null);
-    reset(); // Limpiar el formulario
-    navitage("/dashboard");
-  });
 
+      let res;
+      if (productToEdit) {
+        res = await updateProduct(productId, formData);
+      } else {
+        res = await createProduct(formData);
+        console.log("🚀 ~ onSubmit ~ res:", res);
+      }
+
+      if (res.status === "error") {
+        // Asume que el mensaje es un JSON que contiene un arreglo de errores
+        const errors = JSON.parse(res.message);
+
+        // Configura errores en react-hook-form
+        errors.forEach((err) => {
+          setError(err.path[0], {
+            type: "manual",
+            message: err.message,
+          });
+        });
+      } else {
+        toast.success(
+          productToEdit
+            ? "Producto actualizado exitosamente"
+            : "Producto creado exitosamente"
+        );
+        getProduct();
+        setPreviewImage(null);
+        reset();
+        navitage("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Ocurrió un error al procesar la solicitud.");
+    }
+  });
   return (
     <>
       <Transition appear show={show} as={Fragment}>

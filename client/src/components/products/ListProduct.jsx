@@ -1,15 +1,14 @@
-import { useState } from "react";
 import { useProduct } from "../../context";
 import Product from "./Product";
 
 export default function ListProduct() {
   const { products, loading, deleteProduct } = useProduct();
 
-  if (!Array.isArray(products)) {
+  if (!Array.isArray(products) || products.length === 0) {
     if (loading) {
       return <p>cargando ...</p>;
     }
-    return <p>no hay</p>;
+    return <p>no hay productos disponibles</p>;
   }
   return (
     <>

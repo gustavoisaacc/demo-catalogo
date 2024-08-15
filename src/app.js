@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import { Authrouter } from "./routes/auth.routes.js";
 import { productRouter } from "./routes/product.routes.js";
@@ -12,6 +13,7 @@ export const app = express();
 
 app.use(express.json());
 app.use(cors(corsOptions));
+app.use(cookieParser());
 
 // routes
 app.use("/api/v1/", Authrouter);
