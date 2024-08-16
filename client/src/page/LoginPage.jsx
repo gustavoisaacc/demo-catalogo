@@ -24,7 +24,6 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuth) {
-      alert("You have already logged in");
       navegate("/dashboard");
     }
   }, [isAuth]);

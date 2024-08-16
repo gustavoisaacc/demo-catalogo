@@ -3,6 +3,7 @@ import Product from "./Product";
 
 export default function ListProduct() {
   const { products, loading, deleteProduct } = useProduct();
+  console.log("🚀 ~ ListProduct ~ loading:", loading);
 
   if (!Array.isArray(products) || products.length === 0) {
     if (loading) {

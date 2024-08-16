@@ -12,26 +12,28 @@ export const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isStock, setIsStock] = useState(true);
   const [error, setError] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const getProduct = async (page = 1, limit = 10) => {
+  const getProduct = async (page = currentPage, limit = 5) => {
     try {
+      setLoading(true);
       const res = await api.get(`/product`, {
         params: {
           page,
           limit,
         },
       });
-      console.log("🚀 ~ getProduct ~ res:", res.data.products);
       setProducts(res.data.products);
       setTotalPages(res.data.totalPage);
+      console.log("🚀 ~ getProduct ~ page:", currentPage);
       return res.data;
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // Stop loading after API request
     }
   };
   const createProduct = async (data) => {
@@ -68,7 +70,6 @@ export const ProductProvider = ({ children }) => {
     try {
       const res = await isAvailable(id);
       console.log("🚀 ~ updateAvailable ~ res:", res.data.data.availability);
-      setIsStock(res.data.data.availability);
       return res.data.data.availability;
     } catch (error) {
       console.log(error);
@@ -87,6 +88,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    console.log("🚀 ~ useEffect ~ currentPage:", currentPage);
     getProduct(currentPage);
   }, [currentPage]);
 
@@ -97,7 +99,6 @@ export const ProductProvider = ({ children }) => {
         loading,
         currentPage,
         totalPages,
-        isStock,
         error,
         setCurrentPage,
         createProduct,

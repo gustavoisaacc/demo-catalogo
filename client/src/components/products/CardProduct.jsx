@@ -1,12 +1,12 @@
-import { useEffect } from "react";
 import { useAuth, useProduct } from "../../context";
 export default function Card({ items }) {
   const { isAuth } = useAuth();
   const { updateAvailable, getProduct } = useProduct();
-  useEffect(() => {
-    getProduct();
-  }, []);
 
+  const handleAvailability = async (id) => {
+    await updateAvailable(id);
+    await getProduct();
+  };
   return (
     <div
       className={`min-h-[200px] min-w-40 bg-white relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
@@ -38,7 +38,7 @@ export default function Card({ items }) {
       {isAuth && (
         <div
           className=" text-center text-2xl  py-2 text-white bg-secondary hover:bg-secondaryDarck cursor-pointer"
-          onClick={() => updateAvailable(items._id)}
+          onClick={() => handleAvailability(items._id)}
         >
           Stock
         </div>

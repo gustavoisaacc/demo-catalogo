@@ -1,36 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProduct } from "../../context";
 import { Button } from "./Button";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Pagination() {
   const { currentPage, totalPages, setCurrentPage } = useProduct();
-  console.log("🚀 ~ Pagination ~ currentPage:", currentPage === 1);
 
   const [isDisabledNext, setIsDisabledNext] = useState(false);
   const [isDisabledPrev, setIsDisabledPrev] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const updateButtonState = () => {
+      setIsDisabledPrev(currentPage <= 1);
+      setIsDisabledNext(currentPage >= totalPages);
+    };
+
+    updateButtonState();
+  }, [currentPage, totalPages]);
+
   const handleNextPage = () => {
-    console.log("🚀 ~ Pagination ~ totalPages:", totalPages);
     if (currentPage < totalPages) {
-      console.log(currentPage);
-      setCurrentPage(currentPage + 1);
-    }
-    if (currentPage === totalPages) {
-      setIsDisabledNext(true);
-      setIsDisabledPrev(false);
-    } else {
-      setIsDisabledNext(false);
+      const newPage = currentPage + 1;
+      setCurrentPage(newPage);
+      navigate(`?page=${newPage}`); // Actualiza la URL con la nueva página
     }
   };
+
   const handlePrevPage = () => {
     if (currentPage > 1) {
-      console.log(currentPage);
-      setCurrentPage(currentPage - 1);
-      setIsDisabledNext(false);
-    }
-    if (currentPage === 1) {
-      setIsDisabledPrev(true);
-    } else {
-      setIsDisabledPrev(false);
+      const newPage = currentPage - 1;
+      setCurrentPage(newPage);
+      navigate(`?page=${newPage}`); // Actualiza la URL con la nueva página
     }
   };
   return (

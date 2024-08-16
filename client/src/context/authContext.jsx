@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
       const res = await loginRequest(user);
 
       Cookies.set("key", res.data.token, {
-        expires: new Date(Date.now() + 600000),
+        expires: new Date(Date.now() + 60 * 60 * 1000),
       });
       setUser(res.data);
       setIsAuth(true);

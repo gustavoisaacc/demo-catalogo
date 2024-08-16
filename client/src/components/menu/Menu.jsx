@@ -10,29 +10,29 @@ export default function Menu() {
 
   return (
     <nav className="nadvar text-white p-5 m-auto w-[95%]">
-      <div className="nav-logo">coode</div>
+      <Link to="/" className="nav-logo">
+        coode
+      </Link>
       <div className={`nav-item ${isOpen && "open"} flex gap-5 `}>
         {!isAuth ? (
           <div className="flex">
             {ROUTES_PUBLIC.map((item) => {
               return (
-                <>
-                  <Link
-                    onClick={() => setIsOpen(false)}
-                    to={item.path}
-                    key={item.name}
-                  >
-                    {item.name}
-                  </Link>
-                </>
+                <Link
+                  onClick={() => setIsOpen(false)}
+                  to={item.path}
+                  key={item.name}
+                >
+                  {item.name}
+                </Link>
               );
             })}
           </div>
         ) : (
           <div className={`nav-item ${isOpen && "open"} flex gap-5 `}>
-            {ROUTES_PRIVATE.map((item) => {
+            {ROUTES_PRIVATE.map((item, i) => {
               return (
-                <div key={item.name}>
+                <div key={i}>
                   <Link to={item.path}>{item.name}</Link>
                 </div>
               );

@@ -52,7 +52,7 @@ export const login = async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
-    expires: new Date(Date.now() + 600000), // 10 minutes
+    expires: new Date(Date.now() + 60 * 60 * 1000), // 1HR
   });
 
   res.json({
