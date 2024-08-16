@@ -52,33 +52,51 @@ export const create = async (req, res) => {
 };
 
 export const findAll = async (req, res) => {
-  const { page = 1, limit } = req.query;
+  const { page = 1, limit = 10, category, search } = req.query;
 
-  if (limit) {
-    // Manejo de paginación
-    try {
-      const products = await Product.find()
-        .limit(parseInt(limit))
-        .skip((parseInt(page) - 1) * parseInt(limit))
-        .exec();
-      const count = await Product.countDocuments();
-      return res.json({
-        products,
-        totalPage: Math.ceil(count / limit),
-        currentPage: page,
-      });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: "Error fetching paginated products" });
-    }
+  // Convertir los parámetros de consulta a números
+  const pageNumber = parseInt(page);
+  const limitNumber = parseInt(limit);
+
+  // Validar parámetros
+  if (isNaN(pageNumber) || pageNumber < 1) {
+    return res.status(400).json({ message: "Invalid page number" });
+  }
+  if (isNaN(limitNumber) || limitNumber < 1) {
+    return res.status(400).json({ message: "Invalid limit number" });
   }
 
-  // Si no hay límite en la consulta, devuelve todos los productos
   try {
-    const products = await Product.find().populate("category");
-    return res.status(200).json(products);
+    let query = {};
+
+    // Filtrar por categoría si se proporciona
+    if (category) {
+      const findCategory = await Category.findOne({ name: category });
+      if (!findCategory) {
+        return res.status(404).json({ message: "Category not found" });
+      }
+      query.category = findCategory._id;
+    }
+    if (search) {
+      query.name = { $regex: search, $options: "i" }; // La opción 'i' hace la búsqueda insensible a mayúsculas/minúsculas
+    }
+    // Manejo de paginación y filtrado por categoría
+    const products = await Product.find(query)
+      .limit(limitNumber)
+      .skip((pageNumber - 1) * limitNumber)
+      .populate("category")
+      .exec();
+
+    const count = await Product.countDocuments(query);
+
+    const totalPage = Math.ceil(count / limitNumber);
+    return res.json({
+      products,
+      totalPage,
+      currentPage: pageNumber,
+    });
   } catch (error) {
+    console.error("Error fetching products:", error);
     return res.status(500).json({ error: "Error fetching products" });
   }
 };

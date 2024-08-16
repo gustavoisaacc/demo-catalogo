@@ -9,7 +9,7 @@ export default function Card({ items }) {
   };
   return (
     <div
-      className={`min-h-[200px] min-w-40 bg-white relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
+      className={`bg-white min-h-[300px] min-w-40 relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
         !items.availability ? "grayscale cursor-not-allowed" : "hover:scale-105"
       }  md:max-w-full`}
     >
@@ -26,7 +26,7 @@ export default function Card({ items }) {
       />
       <div className="bg-white p-4 dark:bg-[#333333]">
         <div className="flex justify-between md:block">
-          <h3 className="font-bold text-lg md:text-md text-[#333333]">
+          <h3 className="font-bold text-sm md:text-md text-[#333333]">
             {items.name}
           </h3>
           <h4 className="font-semibold text-lg md:text-md text-secondaryDarck">

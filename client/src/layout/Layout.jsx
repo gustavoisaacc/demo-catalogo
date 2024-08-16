@@ -15,7 +15,7 @@ function Layout() {
       <header className="bg-primary">
         <Menu />
       </header>
-      <main>
+      <main className="h-full ">
         <Outlet />
       </main>
     </>

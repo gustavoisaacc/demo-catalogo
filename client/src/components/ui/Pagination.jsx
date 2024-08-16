@@ -14,6 +14,7 @@ export default function Pagination() {
     const updateButtonState = () => {
       setIsDisabledPrev(currentPage <= 1);
       setIsDisabledNext(currentPage >= totalPages);
+      console.log("🚀 ~ updateButtonState ~ totalPages:", totalPages);
     };
 
     updateButtonState();

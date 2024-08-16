@@ -16,19 +16,28 @@ export const ProductProvider = ({ children }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  const getProduct = async (page = currentPage, limit = 5) => {
+  const [currentCategory, selectedCategory] = useState("");
+  const [currentSearch, setSearch] = useState("");
+  const LIMIT = 20;
+  const getProduct = async (
+    page = currentPage,
+    limit = LIMIT,
+    category = currentCategory,
+    search = currentSearch
+  ) => {
     try {
       setLoading(true);
       const res = await api.get(`/product`, {
         params: {
           page,
           limit,
+          category,
+          search,
         },
       });
       setProducts(res.data.products);
       setTotalPages(res.data.totalPage);
-      console.log("🚀 ~ getProduct ~ page:", currentPage);
+
       return res.data;
     } catch (error) {
       console.log(error);
@@ -36,9 +45,22 @@ export const ProductProvider = ({ children }) => {
       setLoading(false); // Stop loading after API request
     }
   };
+
+  //filter category
+
+  const filterByCategory = async (category) => {
+    console.log("🚀 ~ filterCategory ~ category:", category);
+    selectedCategory(category);
+  };
+  const filterBySearch = async (search) => {
+    console.log("🚀 ~ filterCategory ~ category:", search);
+    setSearch(search);
+  };
+
+  //create product
   const createProduct = async (data) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const res = await postProductReques(data);
       console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
@@ -66,10 +88,8 @@ export const ProductProvider = ({ children }) => {
     }
   };
   const updateAvailable = async (id) => {
-    console.log("🚀 ~ updateAvailable ~ id:", id);
     try {
       const res = await isAvailable(id);
-      console.log("🚀 ~ updateAvailable ~ res:", res.data.data.availability);
       return res.data.data.availability;
     } catch (error) {
       console.log(error);
@@ -88,9 +108,8 @@ export const ProductProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log("🚀 ~ useEffect ~ currentPage:", currentPage);
-    getProduct(currentPage);
-  }, [currentPage]);
+    getProduct(currentPage, LIMIT, currentCategory, currentSearch);
+  }, [currentPage, currentCategory, currentSearch]);
 
   return (
     <ProductContext.Provider
@@ -100,12 +119,15 @@ export const ProductProvider = ({ children }) => {
         currentPage,
         totalPages,
         error,
+        currentCategory,
         setCurrentPage,
         createProduct,
         updateProduct,
         getProduct,
         deleteProduct,
         updateAvailable,
+        filterByCategory,
+        filterBySearch,
       }}
     >
       {children}

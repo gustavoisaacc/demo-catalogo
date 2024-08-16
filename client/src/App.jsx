@@ -6,19 +6,21 @@ import DashboarPage from "./page/DashboarPage";
 import Layout from "./layout/Layout";
 import LayoutC from "./layout/LayoutC";
 import { ToastContainer } from "react-toastify";
+import NotFoundPage from "./page/NotFound";
 
 function App() {
   return (
-    <div className="bg-black-to-gray h-screen w-full">
+    <div className="bg-black-to-gray min-h-screen w-full">
       <Routes>
         <Route element={<LayoutC />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin/login" element={<LoginPage />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<DashboarPage />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <ToastContainer
         position="top-right"
