@@ -5,3 +5,11 @@ export const findAll = async (req, res) => {
 
   res.json({ brand });
 };
+
+export const create = async (req, res) => {
+  const { name } = req.body;
+  const newBrand = new Brand({ name });
+
+  await newBrand.save();
+  res.status(200).json({ message: "Success!" });
+};

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import notfound from "../assets/not.webp";
+import notfound from "../assets/not.png";
 
 export default function NotFoundPage() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-pink-300 to-pink-500 text-center p-5">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-pink-300 to-orange-500 text-center p-5">
       <img
         src={notfound}
         alt="Monstruo hambriento"

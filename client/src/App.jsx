@@ -10,11 +10,11 @@ import NotFoundPage from "./page/NotFound";
 
 function App() {
   return (
-    <div className="bg-black-to-gray min-h-screen w-full">
+    <div className="bg-gradient-to-b from-orange-300 to-orange-500  min-h-screen w-full">
       <Routes>
         <Route element={<LayoutC />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/admin/register" element={<RegisterPage />} />
           <Route path="/admin/login" element={<LoginPage />} />
         </Route>
         <Route element={<Layout />}>

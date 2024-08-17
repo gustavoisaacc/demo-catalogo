@@ -9,13 +9,13 @@ export default function Menu() {
   const { isAuth, signout } = useAuth();
 
   return (
-    <nav className="nadvar text-white p-5 m-auto w-[95%]">
+    <nav className="nadvar text-white p-5 m-auto w-[95%] z-10">
       <Link to="/" className="nav-logo">
         coode
       </Link>
       <div className={`nav-item ${isOpen && "open"} flex gap-5 `}>
         {!isAuth ? (
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             {ROUTES_PUBLIC.map((item) => {
               return (
                 <Link
@@ -29,7 +29,11 @@ export default function Menu() {
             })}
           </div>
         ) : (
-          <div className={`nav-item ${isOpen && "open"} flex gap-5 `}>
+          <div
+            className={`nav-item ${
+              isOpen && "open"
+            } flex  flex-col md:flex-row gap-5`}
+          >
             {ROUTES_PRIVATE.map((item, i) => {
               return (
                 <div key={i}>

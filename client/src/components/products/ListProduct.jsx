@@ -9,7 +9,11 @@ export default function ListProduct() {
     if (loading) {
       return <p>cargando ...</p>;
     }
-    return <p>no hay productos disponibles</p>;
+    return (
+      <p className="text-center text-xl text-white grid place-content-center min-h-screen uppercase">
+        no hay productos disponibles
+      </p>
+    );
   }
   return (
     <>

@@ -10,6 +10,9 @@ function LayoutC() {
       <main className="h-full">
         <Outlet />
       </main>
+      <footer className="bg-gray-900 text-slate-800 p-5 text-center">
+        <p>Copyright &copy; 2024</p>
+      </footer>
     </>
   );
 }

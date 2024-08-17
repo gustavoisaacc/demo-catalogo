@@ -13,9 +13,13 @@ productRouter.post(
 );
 productRouter.put(
   "/:id",
-  upload.fields([{ name: "image", maxCount: 1 }]),
+  [isAuth, upload.fields([{ name: "image", maxCount: 1 }])],
   productController.updateOne
 );
 productRouter.get("/", productController.findAll);
-productRouter.delete("/:id", productController.deleteOne);
-productRouter.get("/:id/availability", productController.updateAvailability);
+productRouter.delete("/:id", isAuth, productController.deleteOne);
+productRouter.get(
+  "/:id/availability",
+  isAuth,
+  productController.updateAvailability
+);

@@ -82,6 +82,7 @@ export const findAll = async (req, res) => {
     }
     // Manejo de paginación y filtrado por categoría
     const products = await Product.find(query)
+      .sort({ name: 1 })
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber)
       .populate("category")
@@ -90,7 +91,7 @@ export const findAll = async (req, res) => {
     const count = await Product.countDocuments(query);
 
     const totalPage = Math.ceil(count / limitNumber);
-    return res.json({
+    res.json({
       products,
       totalPage,
       currentPage: pageNumber,

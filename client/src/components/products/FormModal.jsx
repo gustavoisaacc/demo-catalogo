@@ -91,7 +91,6 @@ export default function AddProductModal() {
         res = await updateProduct(productId, formData);
       } else {
         res = await createProduct(formData);
-        console.log("🚀 ~ onSubmit ~ res:", res);
       }
 
       if (res.status === "error") {
@@ -111,7 +110,6 @@ export default function AddProductModal() {
             ? "Producto actualizado exitosamente"
             : "Producto creado exitosamente"
         );
-        getProduct();
         setPreviewImage(null);
         reset();
         navitage("/dashboard");
@@ -120,6 +118,7 @@ export default function AddProductModal() {
       console.error("Error:", error);
       toast.error("Ocurrió un error al procesar la solicitud.");
     }
+    getProduct();
   });
   return (
     <>
