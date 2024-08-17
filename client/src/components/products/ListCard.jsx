@@ -4,10 +4,10 @@ import CardProdut from "./CardProduct";
 function ListCard() {
   const { products, loading } = useProduct();
 
+  if (loading) {
+    return <p>cargando ...</p>;
+  }
   if (!Array.isArray(products) || products.length === 0) {
-    if (loading) {
-      return <p>cargando ...</p>;
-    }
     return (
       <p className="text-center text-xl text-white grid place-content-center min-h-screen uppercase">
         no hay productos disponibles
