@@ -5,7 +5,11 @@ function ListCard() {
   const { products, loading } = useProduct();
 
   if (loading) {
-    return <p>cargando ...</p>;
+    return (
+      <p className="text-center text-xl text-white grid place-content-center min-h-screen uppercase">
+        cargando ...
+      </p>
+    );
   }
   if (!Array.isArray(products) || products.length === 0) {
     return (
