@@ -14,6 +14,22 @@ export const ProductProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState([]);
 
+  if (!products || Array.isArray(products)) {
+    setProducts([
+      {
+        id: 1,
+        name: "Product 1",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        price: 100,
+        stock: 100,
+        image: "product1.jpg",
+        brand_id: 1,
+        category_id: 1,
+      },
+      // Add more products here...
+    ]);
+  }
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [currentCategory, selectedCategory] = useState("");
