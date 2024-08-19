@@ -19,10 +19,10 @@ function ListCard() {
     );
   }
   return (
-    <div className="grid grid-cols-12 grid-rows-layout gap-5 mt-10 px-10">
+    <div className="w-full grid grid-cols-12 grid-rows-layout gap-5 mt-10 px-10">
       {products.map((product) => (
         <div
-          className="col-span-6 sm:col-span-6 md:col-span-3 lg:col-span-2 gap-5"
+          className="col-span-6 sm:col-span-6 md:col-span-3 lg:col-span-2 gap-10"
           key={product._id}
         >
           <CardProdut items={product} />
