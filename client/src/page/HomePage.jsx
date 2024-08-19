@@ -20,7 +20,7 @@ export default function HomePage() {
 
   return (
     <>
-      <nav className="w-[90%] flex justify-end flex-col md:flex-row  md:w-[95%] gap-5 mx-auto pr-3 mt-5 ">
+      <nav className="w-[95%] flex justify-end flex-col md:flex-row  md:w-[95%] gap-5 mx-auto  mt-5 ">
         <input
           type="text"
           name=""

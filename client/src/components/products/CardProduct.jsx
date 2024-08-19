@@ -10,7 +10,6 @@ export default function Card({ items }) {
   });
 
   useEffect(() => {
-    console.log("🚀 ~ Card ~ windowSize:", windowSize);
     function handleResize() {
       setWindowSize({
         width: window.innerWidth,
@@ -42,7 +41,7 @@ export default function Card({ items }) {
       <img
         src={items.image}
         alt={`imagen de ${items.name}`}
-        className={`w-full h-full rounded-lg shadow-md transition-transform duration-300 `}
+        className={`w-full h-full rounded-lg shadow-md transition-transform duration-300 object-container md:scale-75`}
       />
       <div className="bg-white p-4 dark:bg-[#333333]">
         <div className="flex flex-col md:flex-row md:justify-between">

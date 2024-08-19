@@ -20,7 +20,7 @@ function Layout() {
       <header className="bg-primary">
         <Menu />
       </header>
-      <main className="h-full ">
+      <main className="h-full min-w-full ">
         <Outlet />
       </main>
     </>
