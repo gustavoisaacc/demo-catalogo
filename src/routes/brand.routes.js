@@ -3,5 +3,5 @@ import * as controllerBrand from "../controllers/brand.controllers.js";
 import { isAuth } from "../middleware/validate.middleware.js";
 export const routeBrand = Router();
 
-routeBrand.get("/", isAuth, controllerBrand.findAll);
-routeBrand.post("/", controllerBrand.create);
+routeBrand.get("/", controllerBrand.findAll);
+routeBrand.post("/", isAuth, controllerBrand.create);

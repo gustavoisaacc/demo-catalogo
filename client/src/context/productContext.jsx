@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
   deleteProductReques,
   isAvailable,
@@ -19,35 +19,32 @@ export const ProductProvider = ({ children }) => {
   const [currentCategory, selectedCategory] = useState("");
   const [currentSearch, setSearch] = useState("");
   const LIMIT = 20;
-  const getProduct = useCallback(
-    async (
-      page = currentPage,
-      limit = LIMIT,
-      category = currentCategory,
-      search = currentSearch
-    ) => {
-      try {
-        setLoading(true);
-        const res = await api.get(`/product`, {
-          params: {
-            page,
-            limit,
-            category,
-            search,
-          },
-        });
-        setProducts(res.data.products);
-        setTotalPages(res.data.totalPage);
+  const getProduct = async (
+    page = currentPage,
+    limit = LIMIT,
+    category = currentCategory,
+    search = currentSearch
+  ) => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/product`, {
+        params: {
+          page,
+          limit,
+          category,
+          search,
+        },
+      });
+      setProducts(res.data.products);
+      setTotalPages(res.data.totalPage);
 
-        return res.data;
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false); // Stop loading after API request
-      }
-    },
-    []
-  );
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false); // Stop loading after API request
+    }
+  };
 
   //filter category
 
@@ -112,7 +109,7 @@ export const ProductProvider = ({ children }) => {
 
   useEffect(() => {
     getProduct(currentPage, LIMIT, currentCategory, currentSearch);
-  }, [currentPage, currentCategory, currentSearch, getProduct]);
+  }, [currentPage, currentCategory, currentSearch]);
 
   return (
     <ProductContext.Provider

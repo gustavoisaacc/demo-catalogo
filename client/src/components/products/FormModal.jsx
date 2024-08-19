@@ -110,6 +110,7 @@ export default function AddProductModal() {
             ? "Producto actualizado exitosamente"
             : "Producto creado exitosamente"
         );
+        getProduct();
         setPreviewImage(null);
         reset();
         navitage("/dashboard");
@@ -118,7 +119,6 @@ export default function AddProductModal() {
       console.error("Error:", error);
       toast.error("Ocurrió un error al procesar la solicitud.");
     }
-    getProduct();
   });
   return (
     <>
