@@ -5,15 +5,7 @@ export const BrandContext = createContext();
 
 export const BrandProvider = ({ children }) => {
   const [brand, setBrand] = useState([]);
-  if (!brand || Array.isArray(brand)) {
-    setBrand([
-      {
-        id: 1,
-        name: "Product 1",
-      },
-      // Add more products here...
-    ]);
-  }
+
   const getBrand = async () => {
     try {
       const res = await getBrandRequest();
