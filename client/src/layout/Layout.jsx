@@ -5,10 +5,15 @@ import Menu from "../components/menu/Menu";
 function Layout() {
   const { isAuth, loading } = useAuth();
 
-  if (loading) return <h1>Loading...</h1>;
+  if (loading)
+    return (
+      <h1 className="text-center text-xl text-white grid place-content-center min-h-screen uppercase">
+        Loading...
+      </h1>
+    );
   if (!isAuth && !loading) {
     alert("Por favor inicie session");
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/admin/login" replace />;
   }
   return (
     <>
