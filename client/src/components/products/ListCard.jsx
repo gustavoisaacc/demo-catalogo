@@ -2,9 +2,9 @@ import { useProduct } from "../../context";
 import CardProdut from "./CardProduct";
 
 function ListCard() {
-  const { products, loading } = useProduct();
+  const { products = [], loading } = useProduct();
 
-  if (!Array.isArray(products) || products.length === 0) {
+  if (!Array.isArray(products) || !products) {
     if (loading) {
       return (
         <p className="text-center text-xl text-white grid place-content-center min-h-screen uppercase">

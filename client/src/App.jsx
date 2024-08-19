@@ -15,7 +15,7 @@ function App() {
         <Route element={<LayoutC />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/admin/register" element={<RegisterPage />} />
-          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/dashboard" element={<DashboarPage />} />

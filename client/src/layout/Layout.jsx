@@ -13,7 +13,7 @@ function Layout() {
     );
   if (!isAuth && !loading) {
     alert("Por favor inicie session");
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/login" replace />;
   }
   return (
     <>
