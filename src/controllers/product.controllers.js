@@ -3,7 +3,10 @@ import { Brand } from "../model/brand.js";
 import { Product } from "../model/product.modal.js";
 import { deleteFile, uploadFile } from "../utils/uploadFile.js";
 
-import { validateProduct } from "../schema/product.schema.js";
+import {
+  validateProduct,
+  validateProductUpdate,
+} from "../schema/product.schema.js";
 
 export const create = async (req, res) => {
   const data = req.body;
@@ -26,23 +29,19 @@ export const create = async (req, res) => {
   }
 
   if (data.category) {
-    const findCategory = await Category.findOne({
-      name: { $in: data.category },
-    });
+    const findCategory = await Category.findById(data.category);
     if (!findCategory) {
       const error = new Error("Category not found");
-      return res.status(404).json({ menssage: error.message });
+      res.status(404).json({ menssage: error.message });
     }
     newProduct.category = findCategory._id;
   }
 
   if (data.brand) {
-    const findBrand = await Brand.findOne({
-      name: { $in: data.brand },
-    });
+    const findBrand = await Brand.findById(data.brand);
     if (!findBrand) {
       const error = new Error("Brand not found");
-      return res.status(404).json({ message: error.message });
+      res.status(404).json({ message: error.message });
     }
     newProduct.brand = findBrand._id;
   }
@@ -86,7 +85,8 @@ export const findAll = async (req, res) => {
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber)
       .populate("category")
-      .exec();
+      .populate("brand")
+      .lean();
 
     const count = await Product.countDocuments(query);
 
@@ -116,28 +116,43 @@ export const deleteOne = async (req, res) => {
 export const updateOne = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const image = req.files.image;
+  const image = req.files?.image;
+
+  const result = validateProductUpdate(data);
+  if (!result.success) {
+    return res
+      .status(400)
+      .json({ message: "Invalid product data", errors: result.error });
+  }
 
   const findProduct = await Product.findById(id);
-  console.log("🚀 ~ updateOne ~ findProduct:", findProduct);
-  if (!findProduct) throw new Error("Product not found");
-  if (image === "undefined") {
-    data.image = data.image;
+  if (!findProduct) {
+    return res.status(404).json({ message: "Product not found" });
   }
+
   if (image && image.length > 0) {
     const imageUrl = await uploadFile(image[0]);
-    if (findProduct.image !== imageUrl) {
+    if (findProduct.image !== imageUrl.downloadUrl) {
       await deleteFile(findProduct.image);
-      data.image = imageUrl.downloadUrl;
+      findProduct.image = imageUrl.downloadUrl;
     }
   }
 
-  findProduct.name = data.name || findProduct.name;
-  findProduct.price = data.price || findProduct.price;
-  findProduct.description = data.description || findProduct.description;
-  findProduct.image = data.image;
+  if (data.category && data.category !== findProduct.category.toString()) {
+    findProduct.category = data.category;
+  }
+
+  if (data.brand && data.brand !== findProduct.brand.toString()) {
+    findProduct.brand = data.brand;
+  }
+
+  // Actualizar solo los campos que están en el body
+  findProduct.name = data.name ?? findProduct.name;
+  findProduct.price = data.price ?? findProduct.price;
+  findProduct.description = data.description ?? findProduct.description;
+
   await findProduct.save();
-  res.status(200).json({ menssage: "Product update successfully " });
+  return res.status(200).json({ message: "Product updated successfully" });
 };
 
 export const updateAvailability = async (req, res) => {

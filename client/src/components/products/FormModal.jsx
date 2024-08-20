@@ -55,12 +55,13 @@ export default function AddProductModal() {
 
   useEffect(() => {
     if (productToEdit) {
+      console.log("🚀 ~ useEffect ~ productToEdit:", productToEdit.brand.name);
       // Rellenar el formulario con los datos del producto existente
       setValue("name", productToEdit.name);
       setValue("price", productToEdit.price);
       setValue("description", productToEdit.description);
-      setValue("category", productToEdit.category);
-      setValue("brand", productToEdit.brand);
+      setValue("category", productToEdit.category._id);
+      setValue("brand", productToEdit.brand._id);
       setPreviewImage(productToEdit);
     }
   }, [productToEdit, setValue]);
@@ -156,14 +157,28 @@ export default function AddProductModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
-                  <DialogTitle as="h3" className="font-black text-4xl  my-5">
+                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-5 md:p-16">
+                  <DialogTitle
+                    as="h3"
+                    className="font-black text-xl md:text-4xl  my-5"
+                  >
+                    <button
+                      className="absolute top-20 right-16"
+                      onClick={() => {
+                        reset();
+                        setPreviewImage(null);
+                        navitage(location.pathname);
+                        productToEdit = "";
+                      }}
+                    >
+                      x
+                    </button>
                     Producto
                   </DialogTitle>
 
                   <form
                     onSubmit={onSubmit}
-                    className=" mt-10 bg-white shadow-lg p-10 round-lg "
+                    className=" mt-10 bg-white shadow-lg p-3 md:p-10 round-lg "
                   >
                     {previewImage && (
                       <img

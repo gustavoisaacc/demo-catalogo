@@ -20,17 +20,6 @@ export const validateProduct = (product) => {
   return productSchema.parse(product);
 };
 
-export const userUpdateSchema = z.object({
-  name: z
-    .string()
-    .min(4, "El nombre del produto debe contener al menos 5 caracteres o mas")
-    .optional(),
-  price: z.number().positive().optional(),
-  description: z
-    .string()
-    .min(4, {
-      message:
-        "La descripción del producto debe contener al menos 5 caracteres o mas",
-    })
-    .optional(),
-});
+export const validateProductUpdate = (product) => {
+  return productSchema.partial().safeParse(product);
+};

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useProduct } from "../../context";
 import { Button } from "./Button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Pagination() {
   const { currentPage, totalPages, setCurrentPage } = useProduct();
@@ -14,7 +14,6 @@ export default function Pagination() {
     const updateButtonState = () => {
       setIsDisabledPrev(currentPage <= 1);
       setIsDisabledNext(currentPage >= totalPages);
-      console.log("🚀 ~ updateButtonState ~ totalPages:", totalPages);
     };
 
     updateButtonState();

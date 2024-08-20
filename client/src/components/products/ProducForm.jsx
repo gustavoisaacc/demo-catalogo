@@ -27,7 +27,7 @@ export default function ProductForm({
   return (
     <>
       <div className="flex flex-col gap-5 mb-5">
-        <label className="font-normal text-2xl" htmlFor="name">
+        <label className="font-normal text-md md:text-2xl" htmlFor="name">
           Imagen
         </label>
         {productToEdit ? (
@@ -37,7 +37,7 @@ export default function ProductForm({
             id="image"
             type="file"
             accept="image/*"
-            className="w-full p-3  border-gray-300 border"
+            className="w-full p-3  border-gray-300 border placeholder:text-md"
             {...register("image", {
               required: !productToEdit && "La imagen es obligatorio",
             })}
@@ -47,14 +47,14 @@ export default function ProductForm({
         {errors.image && <MessageError props={errors.image.message} />}
       </div>
       <div className="flex flex-col gap-5">
-        <label className="font-normal text-2xl" htmlFor="name">
+        <label className="font-normal text-md md:text-2xl" htmlFor="name">
           Nombre
         </label>
         <input
           id="name"
           type="text"
           placeholder="Nombre del producto"
-          className="w-full p-3  border-gray-300 border"
+          className="w-full p-3  border-gray-300 border placeholder:text-md"
           {...register("name", {
             required: "El nombre es obligatorio",
           })}
@@ -64,7 +64,7 @@ export default function ProductForm({
       <div className="flex flex-col gap-5">
         <select
           id="category"
-          className="py-3 mt-5 outline-none border"
+          className="py-3 mt-5 outline-none border text-md p-2"
           defaultValue=""
           {...register("category", {
             required: "La categoría es obligatoria",
@@ -74,7 +74,7 @@ export default function ProductForm({
             Seleccione una categoría
           </option>
           {category.map((item) => (
-            <option value={item.name} key={item._id}>
+            <option value={item._id} key={item._id}>
               {item.name}
             </option>
           ))}
@@ -84,7 +84,7 @@ export default function ProductForm({
       <div className="flex flex-col gap-5">
         <select
           id="brand"
-          className="py-3 mt-5 outline-none border"
+          className="py-3 mt-5 outline-none border text-md p-2"
           defaultValue=""
           {...register("brand", {
             required: "La categoría es obligatoria",
@@ -94,7 +94,7 @@ export default function ProductForm({
             Seleccione una marca del producto
           </option>
           {brand.map((item) => (
-            <option value={item.name} key={item._id}>
+            <option value={item._id} key={item._id}>
               {item.name}
             </option>
           ))}
@@ -102,14 +102,14 @@ export default function ProductForm({
         {errors.brand && <MessageError props={errors.brand.message} />}
       </div>
       <div className="flex flex-col gap-5 mt-5 ">
-        <label className="font-normal text-2xl" htmlFor="name">
+        <label className="font-normal text-md md:text-2xl" htmlFor="name">
           Precio
         </label>
         <input
           id="price"
           type="text"
           placeholder="Precio"
-          className="w-full p-3  border-gray-300 border"
+          className="w-full p-3  border-gray-300 border placeholder:text-md"
           {...register("price", {
             required: "El precio es obligatorio",
             valueAsNumber: true,
@@ -125,13 +125,16 @@ export default function ProductForm({
       </div>
 
       <div className="flex flex-col gap-5 mt-5">
-        <label className="font-normal text-2xl" htmlFor="description">
+        <label
+          className="font-normal text-md md:text-2xl"
+          htmlFor="description"
+        >
           Descripción del producto
         </label>
         <textarea
           id="description"
           placeholder="Descripción de la tarea"
-          className="w-full p-3  border-gray-300 border"
+          className="w-full p-3  border-gray-300 border placeholder:text-md"
           {...register("description", {
             required: "La descripción  es obligatoria",
           })}

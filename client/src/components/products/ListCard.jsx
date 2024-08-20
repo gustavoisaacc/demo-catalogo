@@ -3,7 +3,6 @@ import CardProdut from "./CardProduct";
 
 function ListCard() {
   const { products, loading } = useProduct();
-  console.log("🚀 ~ ListCard ~ products:", products);
 
   if (!Array.isArray(products) || products.length === 0) {
     if (loading) {
