@@ -49,11 +49,9 @@ export const ProductProvider = ({ children }) => {
   //filter category
 
   const filterByCategory = async (category) => {
-    console.log("🚀 ~ filterCategory ~ category:", category);
     selectedCategory(category);
   };
   const filterBySearch = async (search) => {
-    console.log("🚀 ~ filterCategory ~ category:", search);
     setSearch(search);
   };
 
@@ -62,7 +60,6 @@ export const ProductProvider = ({ children }) => {
     try {
       setLoading(true);
       const res = await postProductReques(data);
-      console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
         setProducts(res.data);
         setLoading(false);
@@ -77,7 +74,6 @@ export const ProductProvider = ({ children }) => {
   const updateProduct = async (id, data) => {
     try {
       const res = await updateProductReques(id, data);
-      console.log("🚀 ~ updateProduct ~ res:", res);
       setProducts((prevProduct) =>
         prevProduct.map((product) => (product._id === id ? res.data : product))
       );
