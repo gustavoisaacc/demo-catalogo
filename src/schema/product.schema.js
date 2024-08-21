@@ -17,7 +17,7 @@ export const productSchema = z.object({
 });
 
 export const validateProduct = (product) => {
-  return productSchema.parse(product);
+  return productSchema.safeParse(product);
 };
 
 export const validateProductUpdate = (product) => {

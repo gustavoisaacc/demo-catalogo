@@ -60,12 +60,14 @@ export const ProductProvider = ({ children }) => {
     try {
       setLoading(true);
       const res = await postProductReques(data);
+      console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
         setProducts(res.data);
         setLoading(false);
       }
       return res.data;
     } catch (error) {
+      console.log("🚀 ~ createProduct ~ error:", error);
       setError(error.response.data.menssage);
       setLoading(false);
       return error.response.data;
@@ -89,6 +91,7 @@ export const ProductProvider = ({ children }) => {
       return res.data.data.availability;
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
     }
   };
   const deleteProduct = async (id) => {
@@ -100,6 +103,7 @@ export const ProductProvider = ({ children }) => {
         );
     } catch (error) {
       console.log(error);
+      setError(error.response.data.message);
     }
   };
 

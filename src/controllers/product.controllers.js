@@ -20,7 +20,10 @@ export const create = async (req, res) => {
     brand: data.brand,
   });
 
-  if (!result.success) res.status(400).json(result);
+  console.log("🚀 ~ create ~ result:", result);
+  if (!result.success) {
+    return res.status(400).json(result);
+  }
 
   const newProduct = new Product(data);
   if (image && image.length > 0) {
@@ -32,7 +35,7 @@ export const create = async (req, res) => {
     const findCategory = await Category.findById(data.category);
     if (!findCategory) {
       const error = new Error("Category not found");
-      res.status(404).json({ menssage: error.message });
+      return res.status(404).json({ menssage: error.message });
     }
     newProduct.category = findCategory._id;
   }
@@ -41,13 +44,13 @@ export const create = async (req, res) => {
     const findBrand = await Brand.findById(data.brand);
     if (!findBrand) {
       const error = new Error("Brand not found");
-      res.status(404).json({ message: error.message });
+      return res.status(404).json({ message: error.message });
     }
     newProduct.brand = findBrand._id;
   }
 
   await newProduct.save();
-  res.status(200).json({ message: "Success!" });
+  return res.status(200).json({ message: "Product created successfully!" });
 };
 
 export const findAll = async (req, res) => {

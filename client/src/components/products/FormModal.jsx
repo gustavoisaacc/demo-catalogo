@@ -92,14 +92,17 @@ export default function AddProductModal() {
         res = await updateProduct(productId, formData);
       } else {
         res = await createProduct(formData);
+        console.log("🚀 ~ onSubmit ~ res:", res);
       }
 
-      if (res.status === "error") {
-        // Asume que el mensaje es un JSON que contiene un arreglo de errores
-        const errors = JSON.parse(res.message);
+      if (res.message === "Invalid credential") {
+        toast.error(res.message);
+        return navitage("/");
+      }
 
+      if (res.error) {
         // Configura errores en react-hook-form
-        errors.forEach((err) => {
+        return res.error.issues.forEach((err) => {
           setError(err.path[0], {
             type: "manual",
             message: err.message,
@@ -111,14 +114,15 @@ export default function AddProductModal() {
             ? "Producto actualizado exitosamente"
             : "Producto creado exitosamente"
         );
-        getProduct();
-        setPreviewImage(null);
-        reset();
-        navitage("/dashboard");
       }
+      getProduct();
+      setPreviewImage(null);
+      reset();
+      navitage("/dashboard");
     } catch (error) {
       console.error("Error:", error);
       toast.error("Ocurrió un error al procesar la solicitud.");
+      navitage("/login");
     }
   });
   return (
@@ -195,12 +199,15 @@ export default function AddProductModal() {
                       setValue={setValue}
                       category={category}
                     />
-                    {loading && <p>CARGANDO...</p>}
                     <Button
                       variant="default"
                       className="bg-secondary hover:bg-secondaryDarck w-full mt-5"
                     >
-                      {productToEdit ? "Edit" : "Create"}
+                      {loading
+                        ? "Guardando..."
+                        : productToEdit
+                        ? "Edit"
+                        : "Create"}
                     </Button>
                   </form>
                 </DialogPanel>
