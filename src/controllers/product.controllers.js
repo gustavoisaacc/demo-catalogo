@@ -12,18 +12,18 @@ export const create = async (req, res) => {
   const data = req.body;
 
   const image = req.files.image;
-  const result = validateProduct({
-    name: data.name,
-    price: data.price,
-    category: data.category,
-    description: data.description,
-    brand: data.brand,
-  });
+  // const result = validateProduct({
+  //   name: data.name,
+  //   price: data.price,
+  //   category: data.category,
+  //   description: data.description,
+  //   brand: data.brand,
+  // });
 
-  console.log("🚀 ~ create ~ result:", result);
-  if (!result.success) {
-    return res.status(400).json(result);
-  }
+  // console.log("🚀 ~ create ~ result:", result);
+  // if (!result.success) {
+  //   return res.status(400).json(result);
+  // }
 
   const newProduct = new Product(data);
   if (image && image.length > 0) {

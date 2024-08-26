@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth, useProduct } from "../../context";
 
 export default function Card({ items }) {
+  console.log("🚀 ~ Card ~ items:", items.name.length);
   const { isAuth } = useAuth();
   const { updateAvailable, getProduct } = useProduct();
   const [windowSize, setWindowSize] = useState({
@@ -33,7 +34,7 @@ export default function Card({ items }) {
       }  md:max-w-full`}
     >
       {!items.availability && (
-        <p className="w-full absolute top-[0%] left-[0%] py-5 flex justify-center items-center text-4xl text-white font-bold bg-red-950">
+        <p className="w-full absolute top-[0%] left-[0%] py-5 flex justify-center items-center text-4xl md:text-2xl md:py-2 text-white bg-zinc-600 font-bold  z-10 ">
           Sin Stock
         </p>
       )}
@@ -48,7 +49,9 @@ export default function Card({ items }) {
         <div className="flex flex-col md:flex-row md:justify-between">
           <h3 className="font-bold text-xs md:text-md text-[#333333] dark:text-white order-2 md:order-1">
             {windowSize.width < 700
-              ? items.name.slice(0, 20) + "..."
+              ? items.name.length > 18
+                ? items.name.slice(0, 20) + "..."
+                : items.name
               : items.name}
           </h3>
           <h4 className="font-semibold text-sm md:text-md text-secondaryDarck order-1 md:order-2">
@@ -57,9 +60,7 @@ export default function Card({ items }) {
         </div>
 
         <p className="text-[10px] text-[#333333] dark:text-white">
-          {windowSize.width < 700
-            ? items.description.slice(0, 25) + "..."
-            : items.description}
+          {items.description}
         </p>
       </div>
       {isAuth && (
