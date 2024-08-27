@@ -9,7 +9,7 @@ export default function Card({ items }) {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
+  const lo = items.name.toUpperCase();
   useEffect(() => {
     function handleResize() {
       setWindowSize({
@@ -47,12 +47,12 @@ export default function Card({ items }) {
       />
       <div className="bg-white p-4 dark:bg-[#333333]">
         <div className="flex flex-col md:flex-row md:justify-between">
-          <h3 className="font-bold text-xs md:text-md text-[#333333] dark:text-white order-2 md:order-1">
+          <h3 className="font-bold text-xs md:text-sm text-[#333333] dark:text-white order-2 md:order-1">
             {windowSize.width < 700
-              ? items.name.length > 18
-                ? items.name.slice(0, 20) + "..."
-                : items.name
-              : items.name}
+              ? lo.length > 18
+                ? lo.slice(0, 20) + "..."
+                : lo
+              : lo}
           </h3>
           <h4 className="font-semibold text-sm md:text-md text-secondaryDarck order-1 md:order-2">
             ${items.price}
