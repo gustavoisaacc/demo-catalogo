@@ -19,12 +19,24 @@ export const ProductProvider = ({ children }) => {
   const [currentCategory, selectedCategory] = useState("");
   const [currentSearch, setSearch] = useState("");
   const LIMIT = 20;
+
+  const [cachedPages, setCachedPages] = useState({});
+
   const getProduct = async (
     page = currentPage,
     limit = LIMIT,
     category = currentCategory,
     search = currentSearch
   ) => {
+    const cacheKey = `${page}-${category}-${search}`;
+
+    // Verificar si la página ya está en caché
+    if (cachedPages[cacheKey]) {
+      setProducts(cachedPages[cacheKey].products);
+      setTotalPages(cachedPages[cacheKey].totalPages);
+      return cachedPages[cacheKey];
+    }
+
     try {
       setLoading(true);
       const res = await api.get(`/product`, {
@@ -38,11 +50,20 @@ export const ProductProvider = ({ children }) => {
       setProducts(res.data.products);
       setTotalPages(res.data.totalPage);
 
+      // Almacenar los datos en el caché
+      setCachedPages((prevCache) => ({
+        ...prevCache,
+        [cacheKey]: {
+          products: res.data.products,
+          totalPages: res.data.totalPage,
+        },
+      }));
+
       return res.data;
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // Stop loading after API request
+      setLoading(false);
     }
   };
 
