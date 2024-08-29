@@ -129,6 +129,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getProduct(currentPage, LIMIT, currentCategory, currentSearch);
   }, [currentPage, currentCategory, currentSearch]);
 
