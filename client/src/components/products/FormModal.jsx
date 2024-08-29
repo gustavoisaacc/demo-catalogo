@@ -55,7 +55,6 @@ export default function AddProductModal() {
 
   useEffect(() => {
     if (productToEdit) {
-      console.log("🚀 ~ useEffect ~ productToEdit:", productToEdit.brand.name);
       // Rellenar el formulario con los datos del producto existente
       setValue("name", productToEdit.name);
       setValue("price", productToEdit.price);

@@ -81,7 +81,6 @@ export const ProductProvider = ({ children }) => {
     try {
       setLoading(true);
       const res = await postProductReques(data);
-      console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
         setProducts(res.data);
         setLoading(false);

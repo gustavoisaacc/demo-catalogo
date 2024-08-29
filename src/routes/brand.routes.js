@@ -4,4 +4,4 @@ import { isAuth } from "../middleware/validate.middleware.js";
 export const routeBrand = Router();
 
 routeBrand.get("/", controllerBrand.findAll);
-routeBrand.post("/", isAuth, controllerBrand.create);
+routeBrand.post("/", controllerBrand.create);

@@ -10,9 +10,9 @@ export default function Menu() {
 
   return (
     <nav className="nadvar text-white p-5 m-auto w-[95%] z-10">
-      <Link to="/" className="nav-logo">
+      <a href="/" className="nav-logo">
         coode
-      </Link>
+      </a>
       <div className={`nav-item ${isOpen && "open"} flex gap-5 `}>
         {!isAuth ? (
           <div className="flex flex-col md:flex-row">

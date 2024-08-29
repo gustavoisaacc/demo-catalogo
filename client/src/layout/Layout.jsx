@@ -1,9 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context";
 import Menu from "../components/menu/Menu";
+import { useEffect } from "react";
 
 function Layout() {
   const { isAuth, loading } = useAuth();
+
+  useEffect(() => {
+    if (!isAuth) {
+      alert("Por favor inicie session");
+    }
+  }, [isAuth]);
 
   if (loading)
     return (
@@ -12,9 +19,9 @@ function Layout() {
       </h1>
     );
   if (!isAuth && !loading) {
-    alert("Por favor inicie session");
     return <Navigate to="/login" replace />;
   }
+
   return (
     <>
       <header className="bg-primary">

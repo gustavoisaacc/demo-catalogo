@@ -12,7 +12,6 @@ export default function ProductForm({
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log("🚀 ~ handleImageChange ~ file:", file);
       // Mostrar vista previa de la imagen
       const reader = new FileReader();
       reader.onloadend = () => {

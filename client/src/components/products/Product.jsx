@@ -10,8 +10,7 @@ export default function Product({ product, deleteProduct }) {
   const handleDelete = async (id) => {
     const confirm = window.confirm("Estas seguro de eliminar este producto");
     if (confirm) {
-      const res = await deleteProduct(id);
-      console.log(res);
+      await deleteProduct(id);
       toast.error("Product deleted");
     }
   };

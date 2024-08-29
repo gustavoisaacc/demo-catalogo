@@ -11,7 +11,7 @@ import Label from "../components/ui/Label";
 import MessageError from "../components/MessageError";
 
 export default function LoginPage() {
-  const { signin, errors: errorLogin, isAuth } = useAuth();
+  const { signin, errors: errorLogin, isAuth, loading } = useAuth();
 
   const navegate = useNavigate();
   const {
@@ -25,6 +25,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (isAuth) {
       navegate("/dashboard");
+      alert("bienvendo");
     }
   }, [isAuth]);
 
@@ -66,7 +67,7 @@ export default function LoginPage() {
             )}
           </div>
           <Button className="bg-secondary hover:bg-secondaryDarck text-white mr-2 w-full">
-            Inisiar Sesion
+            {loading ? "Cargando..." : " Inisiar Sesion"}
           </Button>
         </form>
       </Card>

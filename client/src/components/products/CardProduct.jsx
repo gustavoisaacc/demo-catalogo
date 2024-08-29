@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useAuth, useProduct } from "../../context";
 
 export default function Card({ items }) {
-  console.log("🚀 ~ Card ~ items:", items.name.length);
   const { isAuth } = useAuth();
   const { updateAvailable, getProduct } = useProduct();
   const [windowSize, setWindowSize] = useState({
@@ -27,6 +26,7 @@ export default function Card({ items }) {
     await updateAvailable(id);
     await getProduct();
   };
+
   return (
     <div
       className={`bg-white min-h-[200px] min-w-full relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
@@ -47,10 +47,10 @@ export default function Card({ items }) {
       />
       <div className="bg-white p-4 dark:bg-[#333333]">
         <div className="flex flex-col md:flex-row md:justify-between">
-          <h3 className="font-bold text-xs md:text-sm text-[#333333] dark:text-white order-2 md:order-1">
+          <h3 className="font-bold text-xs md:text-[10px] text-[#333333] dark:text-white order-2 md:order-1">
             {windowSize.width < 700
               ? lo.length > 18
-                ? lo.slice(0, 20) + "..."
+                ? lo.slice(0, 15) + "..."
                 : lo
               : lo}
           </h3>
