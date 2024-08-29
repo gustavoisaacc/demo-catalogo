@@ -1,5 +1,7 @@
 import Router from "express-promise-router";
 import * as authControllers from "../controllers/auth.controllers.js";
+import { Validated } from "../middleware/validate.middleware.js";
+import { authSchema } from "../schema/auth.schema.js";
 
 export const Authrouter = Router();
 

@@ -19,7 +19,7 @@ export const Button = ({ variant, onClick, className, children }) => {
 
   return (
     <button onClick={onClick} className={combinedClassName}>
-      {loading ? "cargando..." : children}
+      {loading ? "cargando" : children}
     </button>
   );
 };

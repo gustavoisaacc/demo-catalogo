@@ -10,7 +10,8 @@ export default function Product({ product, deleteProduct }) {
   const handleDelete = async (id) => {
     const confirm = window.confirm("Estas seguro de eliminar este producto");
     if (confirm) {
-      await deleteProduct(id);
+      const res = await deleteProduct(id);
+      console.log(res);
       toast.error("Product deleted");
     }
   };
@@ -27,13 +28,13 @@ export default function Product({ product, deleteProduct }) {
 
       <td className="py-2 px-4 text-right">${product.price}</td>
       <td className="py-2 px-4 text-right">{product.stock}</td>
-      <td className="py-2 px-4 text-center flex justify-center items-center md:gap-5 flex-col md:flex-row ">
+      <td className="py-2 px-4 text-center flex place-content-center flex-col md:flex-row ">
         <Button
           onClick={() => {
             navegate(`?id=${product._id}`);
           }}
           variant="primary"
-          className="h-5 w-5 grid place-content-center rounded-full hover:bg-blue-100 transition duration-300 ease-in-out transform hover:scale-110 md:p-5"
+          className=" mr-2 p-2 rounded-full hover:bg-blue-100 transition duration-300 ease-in-out transform hover:scale-110"
         >
           <CiEdit className="w-3 h-3 md:w-5 md:h-5" />
         </Button>
@@ -41,7 +42,7 @@ export default function Product({ product, deleteProduct }) {
         <Button
           onClick={() => handleDelete(product._id)}
           variant="danger"
-          className="mt-1 h-5 w-5 grid place-content-center rounded-full hover:bg-red-100 transition duration-300 ease-in-out transform hover:scale-110 md:p-5"
+          className="p-1 rounded-full hover:bg-red-100 transition duration-300 ease-in-out transform hover:scale-110"
         >
           <CiTrash className="w-3 h-3 md:w-5 md:h-5" />
         </Button>

@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [errors, setErrors] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   // clear errors after 5 seconds
@@ -24,16 +25,15 @@ export const AuthProvider = ({ children }) => {
   const signin = async (user) => {
     try {
       const res = await loginRequest(user);
+
       Cookies.set("key", res.data.token, {
         expires: new Date(Date.now() + 60 * 60 * 1000),
       });
       setUser(res.data);
-
       setIsAuth(true);
       return res.data;
     } catch (error) {
       setErrors(error.response.data.message);
-    } finally {
       setLoading(false);
     }
   };

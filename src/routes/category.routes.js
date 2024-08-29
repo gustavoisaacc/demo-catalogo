@@ -4,5 +4,5 @@ import { isAuth } from "../middleware/validate.middleware.js";
 
 export const routeCategory = Router();
 
-routeCategory.get("/", controllerCategory.findAll);
+routeCategory.get("/", isAuth, controllerCategory.findAll);
 routeCategory.post("/", controllerCategory.create);

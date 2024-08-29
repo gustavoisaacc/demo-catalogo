@@ -4,12 +4,8 @@ export const ROUTES_PUBLIC = [
     name: "Inicio",
   },
   {
-    path: "/register",
-    name: "Registro",
-  },
-  {
-    path: "/login",
-    name: "Inicio session",
+    path: "/products",
+    name: "Productos",
   },
 ];
 
@@ -19,12 +15,16 @@ export const ROUTES_PRIVATE = [
     name: "Administrador",
   },
   {
-    path: "/products",
-    name: "Productos",
+    path: "/new-product",
+    name: "Nuevo Producto",
   },
   {
     path: "/orders",
     name: "Pedidos",
+  },
+  {
+    path: "/new-promotions",
+    name: "Nuevas Promociones",
   },
 ];
 

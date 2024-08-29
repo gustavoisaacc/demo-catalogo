@@ -59,8 +59,8 @@ export default function AddProductModal() {
       setValue("name", productToEdit.name);
       setValue("price", productToEdit.price);
       setValue("description", productToEdit.description);
-      setValue("category", productToEdit.category._id);
-      setValue("brand", productToEdit.brand._id);
+      setValue("category", productToEdit.category);
+      setValue("brand", productToEdit.brand);
       setPreviewImage(productToEdit);
     }
   }, [productToEdit, setValue]);
@@ -91,17 +91,14 @@ export default function AddProductModal() {
         res = await updateProduct(productId, formData);
       } else {
         res = await createProduct(formData);
-        console.log("🚀 ~ onSubmit ~ res:", res);
       }
 
-      if (res.message === "Invalid credential") {
-        toast.error(res.message);
-        return navitage("/");
-      }
+      if (res.status === "error") {
+        // Asume que el mensaje es un JSON que contiene un arreglo de errores
+        const errors = JSON.parse(res.message);
 
-      if (res.error) {
         // Configura errores en react-hook-form
-        return res.error.issues.forEach((err) => {
+        errors.forEach((err) => {
           setError(err.path[0], {
             type: "manual",
             message: err.message,
@@ -113,16 +110,15 @@ export default function AddProductModal() {
             ? "Producto actualizado exitosamente"
             : "Producto creado exitosamente"
         );
+        setPreviewImage(null);
+        reset();
+        navitage("/dashboard");
       }
-      getProduct();
-      setPreviewImage(null);
-      reset();
-      navitage("/dashboard");
     } catch (error) {
       console.error("Error:", error);
       toast.error("Ocurrió un error al procesar la solicitud.");
-      navitage("/login");
     }
+    getProduct();
   });
   return (
     <>
@@ -160,28 +156,14 @@ export default function AddProductModal() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-5 md:p-16">
-                  <DialogTitle
-                    as="h3"
-                    className="font-black text-xl md:text-4xl  my-5"
-                  >
-                    <button
-                      className="absolute top-20 right-16"
-                      onClick={() => {
-                        reset();
-                        setPreviewImage(null);
-                        navitage(location.pathname);
-                        productToEdit = "";
-                      }}
-                    >
-                      x
-                    </button>
+                <DialogPanel className="w-full max-w-4xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
+                  <DialogTitle as="h3" className="font-black text-4xl  my-5">
                     Producto
                   </DialogTitle>
 
                   <form
                     onSubmit={onSubmit}
-                    className=" mt-10 bg-white shadow-lg p-3 md:p-10 round-lg "
+                    className=" mt-10 bg-white shadow-lg p-10 round-lg "
                   >
                     {previewImage && (
                       <img
@@ -198,15 +180,12 @@ export default function AddProductModal() {
                       setValue={setValue}
                       category={category}
                     />
+                    {loading && <p>CARGANDO...</p>}
                     <Button
                       variant="default"
                       className="bg-secondary hover:bg-secondaryDarck w-full mt-5"
                     >
-                      {loading
-                        ? "Guardando..."
-                        : productToEdit
-                        ? "Edit"
-                        : "Create"}
+                      {productToEdit ? "Edit" : "Create"}
                     </Button>
                   </form>
                 </DialogPanel>

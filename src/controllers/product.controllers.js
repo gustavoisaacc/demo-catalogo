@@ -3,27 +3,21 @@ import { Brand } from "../model/brand.js";
 import { Product } from "../model/product.modal.js";
 import { deleteFile, uploadFile } from "../utils/uploadFile.js";
 
-import {
-  validateProduct,
-  validateProductUpdate,
-} from "../schema/product.schema.js";
+import { validateProduct } from "../schema/product.schema.js";
 
 export const create = async (req, res) => {
   const data = req.body;
 
   const image = req.files.image;
-  // const result = validateProduct({
-  //   name: data.name,
-  //   price: data.price,
-  //   category: data.category,
-  //   description: data.description,
-  //   brand: data.brand,
-  // });
+  const result = validateProduct({
+    name: data.name,
+    price: data.price,
+    category: data.category,
+    description: data.description,
+    brand: data.brand,
+  });
 
-  // console.log("🚀 ~ create ~ result:", result);
-  // if (!result.success) {
-  //   return res.status(400).json(result);
-  // }
+  if (!result.success) res.status(400).json(result);
 
   const newProduct = new Product(data);
   if (image && image.length > 0) {
@@ -32,7 +26,9 @@ export const create = async (req, res) => {
   }
 
   if (data.category) {
-    const findCategory = await Category.findById(data.category);
+    const findCategory = await Category.findOne({
+      name: { $in: data.category },
+    });
     if (!findCategory) {
       const error = new Error("Category not found");
       return res.status(404).json({ menssage: error.message });
@@ -41,7 +37,9 @@ export const create = async (req, res) => {
   }
 
   if (data.brand) {
-    const findBrand = await Brand.findById(data.brand);
+    const findBrand = await Brand.findOne({
+      name: { $in: data.brand },
+    });
     if (!findBrand) {
       const error = new Error("Brand not found");
       return res.status(404).json({ message: error.message });
@@ -50,7 +48,7 @@ export const create = async (req, res) => {
   }
 
   await newProduct.save();
-  return res.status(200).json({ message: "Product created successfully!" });
+  res.status(200).json({ message: "Success!" });
 };
 
 export const findAll = async (req, res) => {
@@ -88,8 +86,7 @@ export const findAll = async (req, res) => {
       .limit(limitNumber)
       .skip((pageNumber - 1) * limitNumber)
       .populate("category")
-      .populate("brand")
-      .lean();
+      .exec();
 
     const count = await Product.countDocuments(query);
 
@@ -119,43 +116,28 @@ export const deleteOne = async (req, res) => {
 export const updateOne = async (req, res) => {
   const id = req.params.id;
   const data = req.body;
-  const image = req.files?.image;
-
-  const result = validateProductUpdate(data);
-  if (!result.success) {
-    return res
-      .status(400)
-      .json({ message: "Invalid product data", errors: result.error });
-  }
+  const image = req.files.image;
 
   const findProduct = await Product.findById(id);
-  if (!findProduct) {
-    return res.status(404).json({ message: "Product not found" });
+  console.log("🚀 ~ updateOne ~ findProduct:", findProduct);
+  if (!findProduct) throw new Error("Product not found");
+  if (image === "undefined") {
+    data.image = data.image;
   }
-
   if (image && image.length > 0) {
     const imageUrl = await uploadFile(image[0]);
-    if (findProduct.image !== imageUrl.downloadUrl) {
+    if (findProduct.image !== imageUrl) {
       await deleteFile(findProduct.image);
-      findProduct.image = imageUrl.downloadUrl;
+      data.image = imageUrl.downloadUrl;
     }
   }
 
-  if (data.category && data.category !== findProduct.category.toString()) {
-    findProduct.category = data.category;
-  }
-
-  if (data.brand && data.brand !== findProduct.brand.toString()) {
-    findProduct.brand = data.brand;
-  }
-
-  // Actualizar solo los campos que están en el body
-  findProduct.name = data.name ?? findProduct.name;
-  findProduct.price = data.price ?? findProduct.price;
-  findProduct.description = data.description ?? findProduct.description;
-
+  findProduct.name = data.name || findProduct.name;
+  findProduct.price = data.price || findProduct.price;
+  findProduct.description = data.description || findProduct.description;
+  findProduct.image = data.image;
   await findProduct.save();
-  return res.status(200).json({ message: "Product updated successfully" });
+  res.status(200).json({ menssage: "Product update successfully " });
 };
 
 export const updateAvailability = async (req, res) => {

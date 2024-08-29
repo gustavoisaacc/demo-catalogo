@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import {
   deleteProductReques,
   isAvailable,
@@ -19,60 +19,44 @@ export const ProductProvider = ({ children }) => {
   const [currentCategory, selectedCategory] = useState("");
   const [currentSearch, setSearch] = useState("");
   const LIMIT = 20;
+  const getProduct = useCallback(
+    async (
+      page = currentPage,
+      limit = LIMIT,
+      category = currentCategory,
+      search = currentSearch
+    ) => {
+      try {
+        setLoading(true);
+        const res = await api.get(`/product`, {
+          params: {
+            page,
+            limit,
+            category,
+            search,
+          },
+        });
+        setProducts(res.data.products);
+        setTotalPages(res.data.totalPage);
 
-  const [cachedPages, setCachedPages] = useState({});
-
-  const getProduct = async (
-    page = currentPage,
-    limit = LIMIT,
-    category = currentCategory,
-    search = currentSearch
-  ) => {
-    const cacheKey = `${page}-${category}-${search}`;
-
-    // Verificar si la página ya está en caché
-    if (cachedPages[cacheKey]) {
-      setProducts(cachedPages[cacheKey].products);
-      setTotalPages(cachedPages[cacheKey].totalPages);
-      return cachedPages[cacheKey];
-    }
-
-    try {
-      setLoading(true);
-      const res = await api.get(`/product`, {
-        params: {
-          page,
-          limit,
-          category,
-          search,
-        },
-      });
-      setProducts(res.data.products);
-      setTotalPages(res.data.totalPage);
-
-      // Almacenar los datos en el caché
-      setCachedPages((prevCache) => ({
-        ...prevCache,
-        [cacheKey]: {
-          products: res.data.products,
-          totalPages: res.data.totalPage,
-        },
-      }));
-
-      return res.data;
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false); // Stop loading after API request
+      }
+    },
+    []
+  );
 
   //filter category
 
   const filterByCategory = async (category) => {
+    console.log("🚀 ~ filterCategory ~ category:", category);
     selectedCategory(category);
   };
   const filterBySearch = async (search) => {
+    console.log("🚀 ~ filterCategory ~ category:", search);
     setSearch(search);
   };
 
@@ -81,13 +65,13 @@ export const ProductProvider = ({ children }) => {
     try {
       setLoading(true);
       const res = await postProductReques(data);
+      console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
         setProducts(res.data);
         setLoading(false);
       }
       return res.data;
     } catch (error) {
-      console.log("🚀 ~ createProduct ~ error:", error);
       setError(error.response.data.menssage);
       setLoading(false);
       return error.response.data;
@@ -96,6 +80,7 @@ export const ProductProvider = ({ children }) => {
   const updateProduct = async (id, data) => {
     try {
       const res = await updateProductReques(id, data);
+      console.log("🚀 ~ updateProduct ~ res:", res);
       setProducts((prevProduct) =>
         prevProduct.map((product) => (product._id === id ? res.data : product))
       );
@@ -111,7 +96,6 @@ export const ProductProvider = ({ children }) => {
       return res.data.data.availability;
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message);
     }
   };
   const deleteProduct = async (id) => {
@@ -123,14 +107,12 @@ export const ProductProvider = ({ children }) => {
         );
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message);
     }
   };
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
     getProduct(currentPage, LIMIT, currentCategory, currentSearch);
-  }, [currentPage, currentCategory, currentSearch]);
+  }, [currentPage, currentCategory, currentSearch, getProduct]);
 
   return (
     <ProductContext.Provider

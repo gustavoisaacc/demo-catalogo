@@ -5,7 +5,7 @@ import { debounce } from "lodash";
 import { useProduct } from "../context";
 import SellerDropdown from "../components/products/ContactButton";
 
-export default function HomePage() {
+export default function ProductPage() {
   const { filterBySearch } = useProduct();
   const sellers = [
     { id: 1, name: "gustavo", phone: "5493816550959" },
@@ -14,12 +14,13 @@ export default function HomePage() {
 
   // Debounce para manejar el tiempo de espera antes de realizar la búsqueda
   const handleSearch = debounce((e) => {
+    console.log("🚀 ~ handleSearch ~ e.target.value:", e.target.value);
     filterBySearch(e.target.value);
   }, 500); // 500ms de retraso
 
   return (
     <>
-      <nav className="w-[95%] flex justify-end flex-col md:flex-row  md:w-[95%] gap-5 mx-auto  mt-5 ">
+      <nav className="w-[90%] flex justify-end flex-col md:flex-row  md:w-[95%] gap-5 mx-auto pr-3 mt-5 ">
         <input
           type="text"
           name=""
