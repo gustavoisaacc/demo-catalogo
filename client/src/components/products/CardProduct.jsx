@@ -14,7 +14,7 @@ export default function Card({ items }) {
       }  md:max-w-full`}
     >
       {!items.availability && (
-        <p className="w-full absolute top-[0%] left-[0%] py-5 flex justify-center items-center text-4xl text-white font-bold bg-red-950">
+        <p className=" w-full py-1  absolute top-[0%] left-[0%]  flex justify-center items-center text-md text-white font-bold bg-red-950 rounded-lg">
           Sin Stock
         </p>
       )}

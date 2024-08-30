@@ -34,7 +34,7 @@ export default function Product({ product, deleteProduct }) {
             navegate(`?id=${product._id}`);
           }}
           variant="primary"
-          className=" mr-2 p-2 rounded-full hover:bg-blue-100 transition duration-300 ease-in-out transform hover:scale-110"
+          className=" mr-2 p-2 rounded-full hover:bg-blue-100 transition duration-300 ease-in-out transform hover:scale-110 z-0"
         >
           <CiEdit className="w-3 h-3 md:w-5 md:h-5" />
         </Button>
@@ -42,7 +42,7 @@ export default function Product({ product, deleteProduct }) {
         <Button
           onClick={() => handleDelete(product._id)}
           variant="danger"
-          className="p-1 rounded-full hover:bg-red-100 transition duration-300 ease-in-out transform hover:scale-110"
+          className="p-1 rounded-full hover:bg-red-100 transition duration-300 ease-in-out transform hover:scale-110 z-0"
         >
           <CiTrash className="w-3 h-3 md:w-5 md:h-5" />
         </Button>

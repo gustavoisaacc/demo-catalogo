@@ -7,13 +7,14 @@ import Layout from "./layout/Layout";
 import LayoutC from "./layout/LayoutC";
 import { ToastContainer } from "react-toastify";
 import NotFoundPage from "./page/NotFound";
+import HomePage from "./page/HomePage";
 
 function App() {
   return (
     <div className="bg-gradient-to-b from-orange-300 to-orange-500  min-h-screen w-full">
       <Routes>
         <Route element={<LayoutC />}>
-          <Route path="/" element={<h1>HOME</h1>} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
