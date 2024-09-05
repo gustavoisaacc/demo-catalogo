@@ -1,4 +1,10 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+} from "react";
 import {
   deleteProductReques,
   isAvailable,
@@ -13,12 +19,16 @@ export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [currentCategory, selectedCategory] = useState("");
   const [currentSearch, setSearch] = useState("");
+
   const LIMIT = 20;
+
+  // Utilizamos un objeto memoizado para almacenar los productos en caché según la página y los filtros.
+  const cachedProducts = useMemo(() => ({}), []);
+
   const getProduct = useCallback(
     async (
       page = currentPage,
@@ -26,6 +36,12 @@ export const ProductProvider = ({ children }) => {
       category = currentCategory,
       search = currentSearch
     ) => {
+      const cacheKey = `${page}-${category}-${search}`;
+      if (cachedProducts[cacheKey]) {
+        setProducts(cachedProducts[cacheKey]);
+        return;
+      }
+
       try {
         setLoading(true);
         const res = await api.get(`/product`, {
@@ -36,60 +52,58 @@ export const ProductProvider = ({ children }) => {
             search,
           },
         });
+
         setProducts(res.data.products);
         setTotalPages(res.data.totalPage);
+
+        // Guardamos en caché los productos
+        cachedProducts[cacheKey] = res.data.products;
 
         return res.data;
       } catch (error) {
         console.log(error);
+        setError("Hubo un problema al cargar los productos.");
       } finally {
-        setLoading(false); // Stop loading after API request
+        setLoading(false);
       }
     },
-    []
+    [currentPage, currentCategory, currentSearch, cachedProducts]
   );
 
-  //filter category
+  const filterByCategory = (category) => selectedCategory(category);
+  const filterBySearch = (search) => setSearch(search);
 
-  const filterByCategory = async (category) => {
-    console.log("🚀 ~ filterCategory ~ category:", category);
-    selectedCategory(category);
-  };
-  const filterBySearch = async (search) => {
-    console.log("🚀 ~ filterCategory ~ category:", search);
-    setSearch(search);
-  };
-
-  //create product
+  // Optimización: Evitar múltiples actualizaciones del estado "loading"
   const createProduct = async (data) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await postProductReques(data);
-      console.log("🚀 ~ createProduct ~ res:", res);
       if (res.status === 200) {
-        setProducts(res.data);
-        setLoading(false);
+        setProducts((prevProducts) => [...prevProducts, res.data]);
       }
       return res.data;
     } catch (error) {
-      setError(error.response.data.menssage);
+      setError(error.response?.data?.message || "Error al crear el producto");
+    } finally {
       setLoading(false);
-      return error.response.data;
     }
   };
+
   const updateProduct = async (id, data) => {
     try {
       const res = await updateProductReques(id, data);
-      console.log("🚀 ~ updateProduct ~ res:", res);
       setProducts((prevProduct) =>
         prevProduct.map((product) => (product._id === id ? res.data : product))
       );
       return res.data;
     } catch (error) {
       console.log(error);
-      setError(error.response.data.message);
+      setError(
+        error.response?.data?.message || "Error al actualizar el producto"
+      );
     }
   };
+
   const updateAvailable = async (id) => {
     try {
       const res = await isAvailable(id);
@@ -98,6 +112,7 @@ export const ProductProvider = ({ children }) => {
       console.log(error);
     }
   };
+
   const deleteProduct = async (id) => {
     try {
       const res = await deleteProductReques(id);
