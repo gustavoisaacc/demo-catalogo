@@ -68,6 +68,7 @@ export default function AddProductModal() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const formData = new FormData();
+      console.log("🚀 ~ onSubmit ~ formData:", formData);
 
       formData.append("name", data.name);
       formData.append("price", parseFloat(data.price));
@@ -87,6 +88,7 @@ export default function AddProductModal() {
       }
 
       let res;
+      console.log("🚀 ~ onSubmit ~ res:", res);
       if (productToEdit) {
         res = await updateProduct(productId, formData);
       } else {
@@ -94,6 +96,7 @@ export default function AddProductModal() {
       }
 
       if (res.status === "error") {
+        console.log("🚀 ~ onSubmit ~ res:", res);
         // Asume que el mensaje es un JSON que contiene un arreglo de errores
         const errors = JSON.parse(res.message);
 

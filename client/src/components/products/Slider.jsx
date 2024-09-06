@@ -91,7 +91,7 @@ const Slider = ({ imagenesMarcas }) => {
     >
       <div className="flex gap-4" style={{ display: "flex" }}>
         {duplicatedImages.map((img, i) => (
-          <Link className="flex-shrink-0" to={"/products"} key={i}>
+          <Link className="flex-shrink-0" to={""} key={i}>
             <img
               src={img}
               alt={`brand-${i}`}

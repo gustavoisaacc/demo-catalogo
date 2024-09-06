@@ -34,7 +34,7 @@ export default function Card({ items }) {
 
   return (
     <div
-      className={`bg-white dark:bg-[#333333]  min-h-full w-full relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
+      className={`bg-white dark:bg-[#333333]  min-h-[40px] w-full relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
         !items.availability ? "grayscale cursor-not-allowed" : "hover:scale-105"
       } md:max-w-full`}
     >

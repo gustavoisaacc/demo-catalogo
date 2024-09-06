@@ -96,6 +96,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   const updateProduct = async (id, data) => {
+    console.log("🚀 ~ updateProduct ~ data:", data);
     try {
       const res = await updateProductReques(id, data);
       setProducts((prevProduct) =>

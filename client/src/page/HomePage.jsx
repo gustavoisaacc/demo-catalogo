@@ -1,6 +1,8 @@
 import { imagenesMarcas } from "../utils/imagenes.js";
 import Slider from "../components/products/Slider.jsx";
 import MapComponent from "../components/Map.jsx";
+import { Button } from "../components/ui/Button.jsx";
+import { Link } from "react-router-dom";
 
 function HomePage() {
   const locations = [
@@ -14,7 +16,19 @@ function HomePage() {
       <main className="w-full bg-white border-x-2">
         <section className="flex flex-col lg:flex-row pt-10 gap-4 justify-between items-center m-auto w-[95%]">
           <div className="w-full text-center lg:w-[40%]">
-            <h1 className="text-4xl font-semibold">Pedrotti</h1>
+            <h1 className="text-4xl font-semibold">
+              <span className="text-center">
+                Bienvenido a Coode, un espacio de comercialización online
+              </span>
+              <Link to="/products">
+                <Button
+                  variant="default"
+                  className="bg-secondary hover:bg-secondaryDarck w-[90%] mt-5"
+                >
+                  Productos
+                </Button>
+              </Link>
+            </h1>
           </div>
           <MapComponent
             locations={locations}

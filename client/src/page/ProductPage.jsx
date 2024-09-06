@@ -9,7 +9,6 @@ export default function ProductPage() {
 
   // Debounce para manejar el tiempo de espera antes de realizar la búsqueda
   const handleSearch = debounce((e) => {
-    console.log("🚀 ~ handleSearch ~ e.target.value:", e.target.value);
     filterBySearch(e.target.value);
   }, 500); // 500ms de retraso
 

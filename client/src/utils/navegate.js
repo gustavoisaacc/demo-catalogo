@@ -7,6 +7,10 @@ export const ROUTES_PUBLIC = [
     path: "/products",
     name: "Productos",
   },
+  {
+    path: "/login",
+    name: "Inicio Sesion",
+  },
 ];
 
 export const ROUTES_PRIVATE = [

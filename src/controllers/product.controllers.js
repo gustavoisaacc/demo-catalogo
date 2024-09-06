@@ -12,8 +12,8 @@ export const create = async (req, res) => {
   const result = validateProduct({
     name: data.name,
     price: data.price,
-    category: data.category,
     description: data.description,
+    category: data.category,
     brand: data.brand,
   });
 
@@ -124,30 +124,39 @@ export const deleteOne = async (req, res) => {
 };
 
 export const updateOne = async (req, res) => {
-  const id = req.params.id;
-  const data = req.body;
-  const image = req.files.image;
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    const image = req.files?.image; // Verificar si hay archivos en la solicitud
 
-  const findProduct = await Product.findById(id);
-  console.log("🚀 ~ updateOne ~ findProduct:", findProduct);
-  if (!findProduct) throw new Error("Product not found");
-  if (image === "undefined") {
-    data.image = data.image;
-  }
-  if (image && image.length > 0) {
-    const imageUrl = await uploadFile(image[0]);
-    if (findProduct.image !== imageUrl) {
-      await deleteFile(findProduct.image);
-      data.image = imageUrl.downloadUrl;
+    // Buscar el producto
+    const findProduct = await Product.findById(id);
+    if (!findProduct) {
+      return res.status(404).json({ message: "Product not found" });
     }
-  }
 
-  findProduct.name = data.name || findProduct.name;
-  findProduct.price = data.price || findProduct.price;
-  findProduct.description = data.description || findProduct.description;
-  findProduct.image = data.image;
-  await findProduct.save();
-  res.status(200).json({ menssage: "Product update successfully " });
+    // Si se proporciona una imagen nueva, procesarla
+    if (image && image.length > 0) {
+      const imageUrl = await uploadFile(image[0]);
+      if (findProduct.image !== imageUrl.downloadUrl) {
+        await deleteFile(findProduct.image); // Eliminar la imagen anterior
+        findProduct.image = imageUrl.downloadUrl; // Actualizar la nueva imagen
+      }
+    }
+
+    // Actualizar los otros campos solo si están presentes en la solicitud
+    findProduct.name = data.name || findProduct.name;
+    findProduct.price = data.price || findProduct.price;
+    findProduct.description = data.description || findProduct.description;
+
+    // Guardar el producto actualizado
+    await findProduct.save();
+
+    res.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.error("Error updating product:", error.message);
+    res.status(500).json({ message: error.message });
+  }
 };
 
 export const updateAvailability = async (req, res) => {
