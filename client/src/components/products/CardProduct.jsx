@@ -34,7 +34,7 @@ export default function Card({ items }) {
 
   return (
     <div
-      className={`bg-white dark:bg-[#333333]  min-h-[300px] w-full relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
+      className={`bg-white dark:bg-[#333333]  min-h-full w-full relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
         !items.availability ? "grayscale cursor-not-allowed" : "hover:scale-105"
       } md:max-w-full`}
     >
@@ -51,7 +51,7 @@ export default function Card({ items }) {
         alt={`imagen de ${items.name}`}
         className="w-full h-full object-cover rounded-t-lg"
       />
-      <div className="bg-white p-4 dark:bg-[#333333] flex flex-col justify-between h-full">
+      <div className="bg-white p-4 dark:bg-[#333333] flex flex-col justify-between h-auto">
         <h4 className="font-semibold text-lg md:text-md text-secondaryDarck ">
           ${items.price}
         </h4>

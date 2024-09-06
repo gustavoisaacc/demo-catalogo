@@ -39,7 +39,7 @@
         padding: 5px;
         transform: translateY(-200%);
         transition: 0.5s ease all;
-        z-index: 999;
+        z-index: 99999;
     }
 
     .nav-item.open {
