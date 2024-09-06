@@ -9,7 +9,7 @@ export default function Menu() {
   const { isAuth, signout } = useAuth();
 
   return (
-    <nav className="nadvar text-white p-5 m-auto w-[95%] z-auto">
+    <nav className="nadvar text-white p-5 m-auto w-[95%] z-10">
       <a href="/" className="nav-logo">
         coode
       </a>

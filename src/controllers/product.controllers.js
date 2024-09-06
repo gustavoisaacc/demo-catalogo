@@ -102,6 +102,16 @@ export const findAll = async (req, res) => {
   }
 };
 
+export const findByBrand = async (req, res) => {
+  const { brand } = req.query; // Obtiene la marca de la consulta
+  const findBrand = await Brand.findOne({
+    name: new RegExp(`^${brand}$`, "i"),
+  });
+  if (!findBrand) throw new Error("Brand not found");
+  const products = await Product.find({ brand: findBrand._id });
+  res.json(products);
+};
+
 export const deleteOne = async (req, res) => {
   const id = req.params.id;
   console.log(id);

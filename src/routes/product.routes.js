@@ -17,6 +17,7 @@ productRouter.put(
   productController.updateOne
 );
 productRouter.get("/", productController.findAll);
+productRouter.get("/brand", productController.findByBrand);
 productRouter.delete("/:id", isAuth, productController.deleteOne);
 productRouter.get(
   "/:id/availability",

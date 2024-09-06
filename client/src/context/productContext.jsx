@@ -7,6 +7,7 @@ import {
 } from "react";
 import {
   deleteProductReques,
+  getBrandRequest,
   isAvailable,
   postProductReques,
   updateProductReques,
@@ -70,6 +71,11 @@ export const ProductProvider = ({ children }) => {
     [currentPage, currentCategory, currentSearch, cachedProducts]
   );
 
+  const getBrand = async (brand) => {
+    const res = await getBrandRequest(brand);
+    console.log("🚀 ~ getBrand ~ res:", res);
+  };
+
   const filterByCategory = (category) => selectedCategory(category);
   const filterBySearch = (search) => setSearch(search);
 
@@ -126,6 +132,7 @@ export const ProductProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getProduct(currentPage, LIMIT, currentCategory, currentSearch);
   }, [currentPage, currentCategory, currentSearch, getProduct]);
 
@@ -146,6 +153,7 @@ export const ProductProvider = ({ children }) => {
         updateAvailable,
         filterByCategory,
         filterBySearch,
+        getBrand,
       }}
     >
       {children}

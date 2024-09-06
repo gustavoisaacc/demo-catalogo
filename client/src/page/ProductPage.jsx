@@ -3,14 +3,9 @@ import Pagination from "../components/ui/Pagination";
 import ListCard from "../components/products/ListCard";
 import { debounce } from "lodash";
 import { useProduct } from "../context";
-import SellerDropdown from "../components/products/ContactButton";
 
 export default function ProductPage() {
   const { filterBySearch } = useProduct();
-  const sellers = [
-    { id: 1, name: "gustavo", phone: "5493816550959" },
-    { id: 2, name: "Vendedor 2", phone: "5491198765432" },
-  ];
 
   // Debounce para manejar el tiempo de espera antes de realizar la búsqueda
   const handleSearch = debounce((e) => {
@@ -36,10 +31,6 @@ export default function ProductPage() {
       </section>
 
       <Pagination />
-
-      <div className="fixed bottom-4 right-4 p-4">
-        <SellerDropdown sellers={sellers} />
-      </div>
     </>
   );
 }

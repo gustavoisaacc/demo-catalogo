@@ -1,0 +1,12 @@
+/* Puedes agregar esto en tu archivo CSS o en la configuración de Tailwind si es necesario */
+
+.slider-container {
+    position: relative;
+}
+
+.slider-item {
+    width: 90%;
+    scroll-snap-align: start;
+    overflow: hidden;
+    /* Alinea las imágenes al comienzo del contenedor */
+}
