@@ -63,7 +63,7 @@ export default function Card({ items }) {
             ${items.price}
           </h4>
         </div>
-        <p className="text-sm text-[#333333] dark:text-white ]">
+        <p className="text-sm text-[#333333] dark:text-white ] ">
           {items.description}
         </p>
       </div>
