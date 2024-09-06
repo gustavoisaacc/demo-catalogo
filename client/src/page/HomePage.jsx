@@ -14,7 +14,7 @@ function HomePage() {
       <main className="w-full bg-white border-x-2">
         <section className="flex flex-col lg:flex-row pt-10 gap-4 justify-between items-center m-auto w-[95%]">
           <div className="w-full text-center lg:w-[40%]">
-            <h1 className="text-4xl font-semibold">Promos de la semana</h1>
+            <h1 className="text-4xl font-semibold">Pedrotti</h1>
           </div>
           <MapComponent locations={locations} />
         </section>
