@@ -1,9 +1,9 @@
 export const imagenesMarcas = [
-  "./public/virginia.svg",
-  "./public/fresh.png",
-  "./public/Cotella.svg",
-  "./public/huerta.jpg",
-  "./public/marengo.jpg",
-  "./public/baggio.jpg",
-  "./public/mauri.jfif",
+  "/virginia.svg",
+  "/fresh.png",
+  "/Cotella.svg",
+  "/huerta.jpg",
+  "/marengo.jpg",
+  "/baggio.jpg",
+  "/mauri.jfif",
 ];

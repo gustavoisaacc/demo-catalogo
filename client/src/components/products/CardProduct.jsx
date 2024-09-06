@@ -52,7 +52,7 @@ export default function Card({ items }) {
       />
       <div className="bg-white p-4 dark:bg-[#333333]">
         <div className="flex justify-between md:block">
-          <h3 className="font-bold text-sm md:text-md text-[#333333]">
+          <h3 className="font-bold text-sm md:text-md text-[#333333] dark:text-white ]">
             {windowSize.width < 700
               ? lo.length > 18
                 ? lo.slice(0, 15) + "..."
@@ -63,7 +63,9 @@ export default function Card({ items }) {
             ${items.price}
           </h4>
         </div>
-        <p className="text-sm text-[#333333]">{items.description}</p>
+        <p className="text-sm text-[#333333] dark:text-white ]">
+          {items.description}
+        </p>
       </div>
 
       {/* Mostrar el botón de stock solo si el usuario está autenticado */}

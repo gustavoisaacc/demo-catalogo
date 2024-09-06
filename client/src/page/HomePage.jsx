@@ -16,7 +16,7 @@ function HomePage() {
           <div className="w-full text-center lg:w-[40%]">
             <h1 className="text-4xl font-semibold">Pedrotti</h1>
           </div>
-          <MapComponent locations={locations} />
+          <MapComponent locations={locations} className=" w-[95%] lg:w-[50%]" />
         </section>
       </main>
       <section className="w-[90%] m-auto">

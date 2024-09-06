@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-const MapComponent = ({ locations }) => {
+const MapComponent = ({ locations, className }) => {
   const mapRef = useRef(null);
   const [activePopup, setActivePopup] = useState(null);
 
@@ -26,7 +26,8 @@ const MapComponent = ({ locations }) => {
 
   return (
     <MapContainer
-      style={{ height: "500px", width: "50%" }}
+      className={className}
+      style={{ height: "500px" }}
       center={[-27.05707429567691, -65.40457777895453]} // Centro inicial antes de ajustar
       zoom={15}
       whenCreated={(mapInstance) => {
