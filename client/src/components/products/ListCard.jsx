@@ -10,10 +10,7 @@ function ListCard() {
   // Memorizar los productos para evitar cálculos innecesarios si no hay cambios
   const renderedProducts = useMemo(() => {
     return products.map((product) => (
-      <div
-        className="col-span-6 sm:col-span-6 md:col-span-3 lg:col-span-2 gap-5"
-        key={product._id}
-      >
+      <div className="col-span-6 md:col-span-3 lg:col-span-2" key={product._id}>
         <Suspense fallback={<p>Cargando producto...</p>}>
           <CardProdut items={product} />
         </Suspense>
@@ -37,7 +34,7 @@ function ListCard() {
   }
 
   return (
-    <div className="grid grid-cols-12 grid-rows-layout gap-5 mt-10 px-10 z-0">
+    <div className="grid grid-cols-12 grid-rows-layout gap-5 mt-10 px-10">
       {renderedProducts}
     </div>
   );

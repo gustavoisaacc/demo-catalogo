@@ -22,19 +22,19 @@ export default function Card({ items }) {
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [windowSize]);
+  }, []);
 
   const handleAvailability = useCallback(
     async (id) => {
       await updateAvailable(id);
       await getProduct(); // Podrías optimizar esto actualizando solo el producto, no todos
     },
-    [updateAvailable, getProduct, windowSize]
+    [updateAvailable, getProduct]
   );
 
   return (
     <div
-      className={`bg-white min-h-[300px] min-w-40 relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
+      className={`bg-white dark:bg-[#333333]  min-h-[300px] w-full relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 ${
         !items.availability ? "grayscale cursor-not-allowed" : "hover:scale-105"
       } md:max-w-full`}
     >
